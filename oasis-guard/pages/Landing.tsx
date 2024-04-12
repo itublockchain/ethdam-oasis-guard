@@ -2,14 +2,15 @@ import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
 import type { ReactNode } from "react";
 
-import { Button, Typography } from "~ui";
+import { Button, Gap } from "~ui";
 
 export const Landing = (): ReactNode => {
     return (
         <div className={css(styles.page)}>
             <img src={LandingImage} className={css(styles.image)} />
             <div className={css(styles.actions)}>
-                <Button>Sign Up With Passkeys</Button>
+                <Button color="black">Sign Up With Passkeys</Button>
+                <Gap size={12} />
                 <Button>Sign In With Passkeys</Button>
             </div>
         </div>
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
         width: "100%",
         marginTop: "auto",
         flexDirection: "column",
+        zIndex: 1,
     },
     image: {
         height: 483,
@@ -36,5 +38,6 @@ const styles = StyleSheet.create({
         pointerEvents: "none",
         top: 0,
         right: -80,
+        zIndex: 0,
     },
 });

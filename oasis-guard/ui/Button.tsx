@@ -9,6 +9,7 @@ interface Props extends ComponentPropsWithoutRef<"button"> {
     rightEl?: ReactNode;
     height?: number;
     onClick?: () => void;
+    color?: "black" | "white";
 }
 
 export const Button = ({
@@ -20,8 +21,37 @@ export const Button = ({
     height = 48,
     children,
     onClick,
+    color = "white",
     ...props
 }: Props): ReactNode => {
+    const getColorStyles = () => {
+        if (color === "black") {
+            return {
+                backgroundColor: "black",
+                borderColor: "white",
+                borderWidth: 1,
+            };
+        } else if (color === "white") {
+            return {
+                backgroundColor: "white",
+                borderColor: "white",
+                borderWidth: 1,
+            };
+        }
+    };
+
+    const getTextStyles = () => {
+        if (color === "black") {
+            return {
+                color: "white",
+            };
+        } else if (color === "white") {
+            return {
+                color: "black",
+            };
+        }
+    };
+
     return (
         <button
             {...props}
@@ -29,11 +59,13 @@ export const Button = ({
             className={css(styles.wrapper, ...styleOverrides)}
             style={{
                 height,
+                ...getColorStyles(),
             }}
         >
             {leftEl != null && leftEl}
             <span
                 {...props}
+                style={{ ...getTextStyles() }}
                 className={css(styles.text, ...textStyleOverrides)}
             >
                 {children}
