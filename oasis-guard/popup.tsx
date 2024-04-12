@@ -1,9 +1,24 @@
 import { css, StyleSheet } from "aphrodite"
 
-import { Dimensions } from "~utils"
+import { AppWrapper } from "~components"
+import { useInitialStyling } from "~hooks"
+import { Dimensions, NavigationProvider, NavigationScreen, Paths } from "~utils"
 
-function IndexPopup() {
-  return <div className={css(styles.wrapper)}></div>
+function App() {
+  useInitialStyling()
+
+  return (
+    <AppWrapper>
+      <NavigationProvider
+        initialRoute={{
+          path: Paths.LANDING
+        }}>
+        <NavigationScreen path={Paths.LANDING}>
+          <div></div>
+        </NavigationScreen>
+      </NavigationProvider>
+    </AppWrapper>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -13,4 +28,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default IndexPopup
+export default App
