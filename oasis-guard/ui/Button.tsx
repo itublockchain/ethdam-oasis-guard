@@ -26,10 +26,10 @@ export const Button = ({
         <button
             {...props}
             onClick={onClick}
+            className={css(styles.wrapper, ...styleOverrides)}
             style={{
                 height,
             }}
-            className={css(styles.wrapper, ...styleOverrides)}
         >
             {leftEl != null && leftEl}
             <span
@@ -46,7 +46,6 @@ export const Button = ({
 const styles = StyleSheet.create({
     wrapper: {
         width: "100%",
-        height: "100%",
         display: "flex",
         fontFamily: "Roboto, sans-serif",
         alignItems: "center",
