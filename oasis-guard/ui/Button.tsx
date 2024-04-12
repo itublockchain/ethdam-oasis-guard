@@ -1,5 +1,5 @@
 import { css, StyleSheet } from "aphrodite";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import { useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 interface Props extends ComponentPropsWithoutRef<"button"> {
     textProps?: ComponentPropsWithoutRef<"span">;
@@ -24,6 +24,8 @@ export const Button = ({
     color = "white",
     ...props
 }: Props): ReactNode => {
+    const [hovered, setHovered] = useState(false);
+
     const getColorStyles = () => {
         if (color === "black") {
             return {
@@ -56,10 +58,22 @@ export const Button = ({
         <button
             {...props}
             onClick={onClick}
-            className={css(styles.wrapper, ...styleOverrides)}
+            className={css(
+                styles.wrapper,
+                hovered ? styles.hovered : null,
+                ...styleOverrides,
+            )}
             style={{
                 height,
                 ...getColorStyles(),
+            }}
+            onMouseEnter={(e) => {
+                props.onMouseEnter?.(e);
+                setHovered(true);
+            }}
+            onMouseLeave={(e) => {
+                props.onMouseLeave?.(e);
+                setHovered(false);
             }}
         >
             {leftEl != null && leftEl}
@@ -76,6 +90,11 @@ export const Button = ({
 };
 
 const styles = StyleSheet.create({
+    hovered: {
+        opacity: 0.95,
+        transform: "scale(1.01)",
+        transition: "all 0.2s ease-in-out",
+    },
     wrapper: {
         width: "100%",
         display: "flex",
@@ -85,6 +104,9 @@ const styles = StyleSheet.create({
         borderRadius: "12px",
         cursor: "pointer",
         outline: "none",
+        borderStyle: "inset",
+        transition: "all 0.2s ease-in-out",
+        zIndex: 1,
     },
     text: {
         width: "100%",
