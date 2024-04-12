@@ -1,4 +1,4 @@
 export const Dimensions = {
-  width: 360,
-  heigth: 600
-}
+    width: 360,
+    heigth: 600,
+};

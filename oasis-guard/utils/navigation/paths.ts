@@ -1,3 +1,3 @@
 export enum Paths {
-  LANDING = "LANDING"
+    LANDING = "LANDING",
 }

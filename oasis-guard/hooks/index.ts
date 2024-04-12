@@ -1,1 +1,1 @@
-export * from "./useInitialStyling"
+export * from "./useInitialStyling";

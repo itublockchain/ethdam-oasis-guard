@@ -1,2 +1,2 @@
-export * from "./webauthn"
-export * from "./webauthnHelper"
+export * from "./webauthn";
+export * from "./webauthnHelper";
