@@ -21,7 +21,12 @@
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "prettier": "3.2.4",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "@passwordless-id/webauthn": "1.5.0",
+    "@plasmohq/messaging": "0.6.0",
+    "aphrodite": "2.4.0",
+    "@tanstack/react-query": "5.29.2",
+    "recoil": "0.7.7"
   },
   "manifest": {
     "host_permissions": [
