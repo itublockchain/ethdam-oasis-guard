@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 import {IR1Validator} from "./interfaces/IValidator.sol";
 
 contract Account is IR1Validator {
@@ -20,13 +20,18 @@ contract Account is IR1Validator {
     }
 
     function addPassword(
+        address _validator,
         bytes32 _signedHash,
         bytes memory _signature,
         bytes32 _password,
         string memory _name
     ) public {
         require(
-            validateSignature(_signedHash, _signature, publicKey),
+            IR1Validator(_validator).validateSignature(
+                _signedHash,
+                _signature,
+                publicKey
+            ),
             "Account: Cannot validate signature"
         );
         require(
@@ -41,12 +46,17 @@ contract Account is IR1Validator {
     }
 
     function getPassword(
+        address _validator,
         bytes32 _signedHash,
         bytes memory _signature,
         string memory _name
     ) public view returns (bytes32) {
         require(
-            validateSignature(_signedHash, _signature, publicKey),
+            IR1Validator(_validator).validateSignature(
+                _signedHash,
+                _signature,
+                publicKey
+            ),
             "Account: Cannot validate signature"
         );
         require(bytes(_name).length > 0, "Account: Name cannot be empty");
@@ -55,12 +65,17 @@ contract Account is IR1Validator {
     }
 
     function deletePassword(
+        address _validator,
         bytes32 _signedHash,
         bytes memory _signature,
         string memory _name
     ) public {
         require(
-            validateSignature(_signedHash, _signature, publicKey),
+            IR1Validator(_validator).validateSignature(
+                _signedHash,
+                _signature,
+                publicKey
+            ),
             "Account: Cannot validate signature"
         );
         require(

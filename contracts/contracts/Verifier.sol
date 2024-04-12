@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 import {Base64} from "./helpers/Base64.sol";
+import {IR1Validator, IERC165} from "./interfaces/IValidator.sol";
 import {VerifierCaller} from "./helpers/VerifierCaller.sol";
 
 contract PasskeyVerifier is VerifierCaller {
