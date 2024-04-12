@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import { BigNumber, ethers } from "ethers";
 
-import { register } from "~utils";
+import { authenticate, register } from "~utils";
 
 export class OasisGuardPasskeyController {
     static getDisplayName(): string {
@@ -50,12 +50,17 @@ export class OasisGuardPasskeyController {
     // public static authenticate() {}
 
     static async register() {
-        const CHALLENGE = "frhdfrhdfrhdfrhd";
+        const CHALLENGE = "deadbeefdeafbeef";
         return await register(
             OasisGuardPasskeyController.getCurrentDateReadable(),
             "OasisGuard",
             CHALLENGE,
         );
+    }
+
+    static async auth() {
+        const CHALLENGE = "deadbeefdeafbeef";
+        return await authenticate([], CHALLENGE);
     }
 
     static base64ToHex(base64: string): string {

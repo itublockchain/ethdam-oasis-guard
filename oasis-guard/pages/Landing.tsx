@@ -8,7 +8,13 @@ import { Button, Gap } from "~ui";
 export const Landing = (): ReactNode => {
     return (
         <div className={css(styles.page)}>
-            <img src={LandingImage} className={css(styles.image)} />
+            <img
+                src={LandingImage}
+                style={{
+                    animationTimingFunction: "linear",
+                }}
+                className={css(styles.image)}
+            />
             <div className={css(styles.actions)}>
                 <Button
                     onClick={async () => {
@@ -16,18 +22,25 @@ export const Landing = (): ReactNode => {
                             await OasisGuardPasskeyController.register();
                         const publicKeyBase64Url =
                             registrationEncoded.credential.publicKey;
-                        console.log(
+                        const publicKey =
                             await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
                                 publicKeyBase64Url,
-                            ),
-                        );
+                            );
                     }}
                     color="black"
                 >
                     Sign Up With Passkeys
                 </Button>
                 <Gap size={12} />
-                <Button>Sign In With Passkeys</Button>
+                <Button
+                    onClick={async () => {
+                        const authResponse =
+                            await OasisGuardPasskeyController.auth();
+                        console.log(authResponse);
+                    }}
+                >
+                    Sign In With Passkeys
+                </Button>
             </div>
         </div>
     );
@@ -55,5 +68,24 @@ const styles = StyleSheet.create({
         top: 0,
         right: -80,
         zIndex: 0,
+        animationName: {
+            "0%": {
+                transform: "scale(1)",
+            },
+            "25%": {
+                transform: "scale(1.025)",
+            },
+            "50%": {
+                transform: "scale(1.05)",
+            },
+            "75%": {
+                transform: "scale(1.025)",
+            },
+            "100%": {
+                transform: "scale(1)",
+            },
+        },
+        animationIterationCount: "infinite",
+        animationDuration: "7.5s",
     },
 });
