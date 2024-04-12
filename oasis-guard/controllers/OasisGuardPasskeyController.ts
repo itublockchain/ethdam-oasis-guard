@@ -1,3 +1,6 @@
+import { Buffer } from "buffer";
+import { BigNumber, ethers } from "ethers";
+
 import { register } from "~utils";
 
 export class OasisGuardPasskeyController {
@@ -53,5 +56,55 @@ export class OasisGuardPasskeyController {
             "OasisGuard",
             CHALLENGE,
         );
+    }
+
+    static base64ToHex(base64: string): string {
+        return Buffer.from(base64, "base64").toString("hex");
+    }
+
+    static base64UrlToUtf8(base64Url: string): string {
+        return Buffer.from(base64Url, "base64").toString("hex");
+    }
+
+    static async getPublicKeyFromPublicKeyCose(
+        publicKeyCose: string,
+    ): Promise<string> {
+        const publicKeyBuffer = Buffer.from(publicKeyCose, "base64");
+        const rawPubkey = await crypto.subtle.exportKey(
+            "jwk",
+            await this.getKey(publicKeyBuffer),
+        );
+        const { x, y } = rawPubkey;
+        const xHex = this.base64ToHex(x);
+        const yHex = this.base64ToHex(y);
+        return "0x" + xHex + yHex;
+    }
+
+    static base64toBase64Url(base64: string): string {
+        return base64
+            .replaceAll("+", "-")
+            .replaceAll("/", "_")
+            .replaceAll("=", "");
+    }
+
+    static async getKey(pubkey: ArrayBufferLike): Promise<CryptoKey> {
+        const algoParams = {
+            name: "ECDSA",
+            namedCurve: "P-256",
+            hash: "SHA-256",
+        };
+
+        const response = await crypto.subtle.importKey(
+            "spki",
+            pubkey,
+            algoParams,
+            true,
+            ["verify"],
+        );
+        return response;
+    }
+
+    static bufferToHex(buffer: Buffer): string {
+        return buffer.toString("hex");
     }
 }

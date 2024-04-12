@@ -11,7 +11,17 @@ export const Landing = (): ReactNode => {
             <img src={LandingImage} className={css(styles.image)} />
             <div className={css(styles.actions)}>
                 <Button
-                    onClick={OasisGuardPasskeyController.register}
+                    onClick={async () => {
+                        const registrationEncoded =
+                            await OasisGuardPasskeyController.register();
+                        const publicKeyBase64Url =
+                            registrationEncoded.credential.publicKey;
+                        console.log(
+                            await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
+                                publicKeyBase64Url,
+                            ),
+                        );
+                    }}
                     color="black"
                 >
                     Sign Up With Passkeys
