@@ -2,6 +2,7 @@ import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
 import type { ReactNode } from "react";
 
+import { OasisGuardPasskeyController } from "~controllers";
 import { Button, Gap } from "~ui";
 
 export const Landing = (): ReactNode => {
@@ -9,7 +10,12 @@ export const Landing = (): ReactNode => {
         <div className={css(styles.page)}>
             <img src={LandingImage} className={css(styles.image)} />
             <div className={css(styles.actions)}>
-                <Button color="black">Sign Up With Passkeys</Button>
+                <Button
+                    onClick={OasisGuardPasskeyController.register}
+                    color="black"
+                >
+                    Sign Up With Passkeys
+                </Button>
                 <Gap size={12} />
                 <Button>Sign In With Passkeys</Button>
             </div>
