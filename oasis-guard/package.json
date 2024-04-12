@@ -1,9 +1,9 @@
 {
   "name": "oasis-guard",
-  "displayName": "Oasis guard",
+  "displayName": "OasisGuard",
   "version": "0.0.1",
-  "description": "An manager extension works on Oasis Network.",
-  "author": "ITU Blockchain",
+  "description": "A manager extension works on Oasis Network.",
+  "author": "@itublockchain",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -26,6 +26,10 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
-    ]
+    ],
+    "permissions": [
+      "scripting"
+    ],
+    "key": "$CRX_KEY"
   }
 }
