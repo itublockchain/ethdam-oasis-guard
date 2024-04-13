@@ -11,6 +11,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,md,sol,json,js}\""
     },
     "dependencies": {
+        "@bandada/api-sdk": "^2.2.6",
         "@semaphore-protocol/identity": "4.0.0-beta.7",
         "cbor": "^9.0.2",
         "ethers": "5.7.2",
