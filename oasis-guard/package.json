@@ -12,6 +12,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,md,sol,json,js}\""
     },
     "dependencies": {
+        "2fa-util": "^1.2.0",
         "@bandada/api-sdk": "^2.2.6",
         "@semaphore-protocol/contracts": "4.0.0-beta.7",
         "@semaphore-protocol/identity": "4.0.0-beta.7",
