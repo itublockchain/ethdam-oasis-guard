@@ -36,5 +36,43 @@
     ],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[2]",
+        "name": "_publicKey",
+        "type": "bytes32[2]"
+      }
+    ],
+    "name": "getAccountAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[2]",
+        "name": "_publicKey",
+        "type": "bytes32[2]"
+      }
+    ],
+    "name": "hashPublicKey",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
   }
 ]
