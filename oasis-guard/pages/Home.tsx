@@ -19,12 +19,12 @@ import {
     Copy,
     Eye,
     EyeSlash,
-    Google,
+    ImportSquare,
     Share,
     Trash,
 } from "iconsax-react";
 import Papa from "papaparse";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { Navbar } from "~components";
 import { OasisGuardPasswordController } from "~controllers";
@@ -42,6 +42,7 @@ import {
 type ImportData = {
     name: string;
     password: string;
+    url?: string;
 };
 
 export const Home = (): ReactNode => {
@@ -50,12 +51,16 @@ export const Home = (): ReactNode => {
     const inputRef = useRef(null);
     const [file, setFile] = useState<File | null>(null);
     const userStore = useUserStore();
+    const [readyToImportData, setReadyToImportData] =
+        useState<Array<ImportData> | null>(null);
 
     const hasNoPasswords = passwordNames.length === 0;
 
     const addPasswordsMutation = useMutation({
         mutationFn: async (data: Array<ImportData>) => {
-            const names = data.map((item) => item.name);
+            const formatUrl = (url: string) => url?.replace("https://", "");
+            const names = data.map((item) => item.name ?? formatUrl(item.url));
+
             const passwords = data.map((item) => item.password);
             await OasisGuardPasswordController.addPasswords(
                 userStore.credentialId,
@@ -68,6 +73,17 @@ export const Home = (): ReactNode => {
             });
         },
     });
+
+    useEffect(() => {
+        try {
+            const imported = localStorage.getItem("IMPORT");
+            if (imported) {
+                setReadyToImportData(JSON.parse(imported));
+            }
+        } catch {
+            localStorage.removeItem("IMPORT");
+        }
+    }, []);
 
     return (
         <div className={css(styles.page)}>
@@ -116,8 +132,11 @@ export const Home = (): ReactNode => {
                                             complete: async function (results: {
                                                 data: Array<ImportData>;
                                             }) {
-                                                await addPasswordsMutation.mutateAsync(
-                                                    results.data,
+                                                localStorage.setItem(
+                                                    "IMPORT",
+                                                    JSON.stringify(
+                                                        results.data,
+                                                    ),
                                                 );
                                             },
                                         });
@@ -127,17 +146,25 @@ export const Home = (): ReactNode => {
                                     type="file"
                                     style={{ display: "none" }}
                                 />
-                                {/* <Button
+                                <Button
                                     isLoading={addPasswordsMutation.isPending}
                                     onClick={() => {
-                                        inputRef.current.click();
+                                        if (readyToImportData != null) {
+                                            localStorage.removeItem("IMPORT");
+                                            addPasswordsMutation.mutateAsync(
+                                                readyToImportData,
+                                            );
+                                            setReadyToImportData(null);
+                                        } else {
+                                            inputRef.current.click();
+                                        }
                                     }}
                                     color="black"
-                                    leftEl={<Google color="white" />}
+                                    leftEl={<ImportSquare color="white" />}
                                     styleOverrides={[styles.import]}
                                 >
-                                    Import from Google
-                                </Button> */}
+                                    Import
+                                </Button>
                             </>
                         )}
                         {passwordNames.map((name) => {

@@ -58,6 +58,14 @@ export class OasisGuardPasswordController {
             return ethers.utils.formatBytes32String(password);
         });
 
+        console.log([
+            this.VALIDATOR,
+            signedHash,
+            signature,
+            passwordsFormatted,
+            names,
+        ]);
+
         const receipt = await sendGaslessTx({
             abi: AccountABI,
             contractAddress: publicAddress,

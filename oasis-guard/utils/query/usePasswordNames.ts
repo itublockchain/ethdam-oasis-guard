@@ -21,6 +21,7 @@ export const usePasswordNames = () => {
                 return [];
             }
         },
+        refetchInterval: 5000,
     });
 
     return { data: data ?? [], ...rest };
