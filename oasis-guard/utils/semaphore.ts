@@ -1,11 +1,15 @@
 import { Identity } from "@semaphore-protocol/identity";
 import { ethers } from "ethers";
 
-import { AccountABI, Address } from "~web3";
+import {
+    AccountABI,
+    Address,
+    getGaslessProxyContract,
+    SAPPHIRE_PROVIDER,
+    SemaphoreABI,
+} from "~web3";
 
-const provider = new ethers.providers.JsonRpcProvider(
-    "https://testnet.sapphire.oasis.io",
-);
+const provider = SAPPHIRE_PROVIDER;
 
 const accountFactory = new ethers.Contract(
     Address.FACTORY,
@@ -13,7 +17,32 @@ const accountFactory = new ethers.Contract(
     provider,
 );
 
+const semaphore = new ethers.Contract(
+    Address.SEMAPHORE,
+    SemaphoreABI,
+    provider,
+);
+
+const semaphoreVerifier = new ethers.Contract(
+    Address.SEMAPHORE_VERIFIER,
+    SemaphoreABI,
+    provider,
+);
+
 const readOnlyAccountFactory = accountFactory.connect(provider);
+const gaslessProxy = async (calldata: string, address: string) => {
+    const accountCreationCalldata = await getGaslessProxyContract().makeProxyTx(
+        address,
+        calldata,
+        10_000_000,
+    );
+
+    const tx = await SAPPHIRE_PROVIDER.sendTransaction(accountCreationCalldata);
+    const receipt = await tx.wait();
+
+    console.log(receipt);
+    return receipt;
+};
 
 export const getAccountDetails = async (
     signedHash: string,
@@ -40,19 +69,12 @@ export const getAccountDetails = async (
     return { publicKey, accountAddress, privateKey };
 };
 
-export const signMessage = async (
-    signedHash: string,
-    signature: string,
-    id: string,
-    message: string,
-) => {
-    const { privateKey } = await getAccountDetails(signedHash, signature, id);
-    const identity = new Identity(privateKey);
-    const signedMessage = identity.signMessage(message);
-    const verified = Identity.verifySignature(
-        message,
-        signedMessage,
-        identity.publicKey,
+export const createGroup = async (privateKey: string) => {
+    const { publicKey, commitment } = new Identity(privateKey);
+    const writeSemaphore = semaphore.attach(publicKey.toString());
+    const encodedData = writeSemaphore.interface.encodeFunctionData(
+        "createGroup",
+        [commitment],
     );
-    return { signedMessage, verified };
+    gaslessProxy(encodedData);
 };

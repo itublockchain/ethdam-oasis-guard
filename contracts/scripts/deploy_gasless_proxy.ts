@@ -8,13 +8,17 @@ async function main() {
   await gaslessProxy.waitForDeployment();
 
   console.log("Gassless proxy deployed to:", gaslessProxy.address);
-  console.log(process.env.PRIVATE_KEY_GASLESS_PROXY);
+
+  const wallet = new ethers.Wallet(
+    process.env.PRIVATE_KEY_GASLESS_PROXY as string,
+    ethers.provider
+  );
   await gaslessProxy.setKeypair({
     addr: process.env.PUBLIC_KEY_GASLESS_PROXY,
     secret: Uint8Array.from(
       Buffer.from(process.env.PRIVATE_KEY_GASLESS_PROXY as string, "hex")
     ),
-    nonce: 1,
+    nonce: await wallet.getNonce(),
   });
 }
 
