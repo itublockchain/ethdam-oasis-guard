@@ -7,3 +7,4 @@ export * from "./formatHex";
 export * from "./date";
 export * from "./query";
 export * from "./query/index";
+export * from "./getFatSignature";

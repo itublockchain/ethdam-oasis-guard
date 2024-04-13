@@ -24,7 +24,7 @@ export class OasisGuardFactoryController {
             [publicKey, formatHex(semaphoreIdentityPK), userId],
         );
 
-        const accountCreationCalldata =
+        const accountCreationMetaTx =
             await getGaslessProxyContract().makeProxyTx(
                 Address.FACTORY,
                 calldata,
@@ -32,7 +32,7 @@ export class OasisGuardFactoryController {
             );
 
         const tx = await SAPPHIRE_PROVIDER.sendTransaction(
-            accountCreationCalldata,
+            accountCreationMetaTx,
         );
         const receipt = await tx.wait();
 
