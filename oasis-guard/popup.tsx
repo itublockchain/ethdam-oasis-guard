@@ -2,7 +2,7 @@ import { css, StyleSheet } from "aphrodite";
 
 import { AppWrapper } from "~components";
 import { useInitialStyling } from "~hooks";
-import { Landing } from "~pages";
+import { Home, Landing } from "~pages";
 import {
     Dimensions,
     NavigationProvider,
@@ -22,6 +22,9 @@ function App() {
             >
                 <NavigationScreen path={Paths.LANDING}>
                     <Landing />
+                </NavigationScreen>
+                <NavigationScreen path={Paths.HOME}>
+                    <Home />
                 </NavigationScreen>
             </NavigationProvider>
         </AppWrapper>
