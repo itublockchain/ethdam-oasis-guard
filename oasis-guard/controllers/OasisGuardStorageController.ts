@@ -5,14 +5,18 @@ export const OasisGuardStorageKeys = {
 };
 
 export class OasisGuardStorageController {
-    static async setUserStore(userStore: User) {
+    static setUserStore(userStore: User): boolean {
+        if (userStore == null) {
+            return false;
+        }
         localStorage.setItem(
             OasisGuardStorageKeys.USER_STORE,
             JSON.stringify(userStore),
         );
+        return true;
     }
 
-    static async getUserStore() {
+    static getUserStore(): User | null {
         const userStore = localStorage.getItem(
             OasisGuardStorageKeys.USER_STORE,
         );
@@ -22,7 +26,7 @@ export class OasisGuardStorageController {
         return null;
     }
 
-    static async clearUserStore() {
+    static clearUserStore(): void {
         localStorage.removeItem(OasisGuardStorageKeys.USER_STORE);
     }
 }

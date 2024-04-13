@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { Navbar } from "~components";
 
 export const Home = (): ReactNode => {
+    const passwords = [];
+
     return (
         <div className={css(styles.page)}>
             <Navbar />
@@ -13,7 +15,7 @@ export const Home = (): ReactNode => {
 
 const styles = StyleSheet.create({
     page: {
-        height: "100%",
         display: "flex",
+        flexDirection: "column",
     },
 });

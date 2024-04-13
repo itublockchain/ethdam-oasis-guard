@@ -19,6 +19,7 @@ type NavigationObject = {
     push: NavigationMethodParams;
     pop: () => void;
     canGoBack: () => boolean;
+    replace: NavigationMethodParams;
 };
 
 type NavigationContextType = {
@@ -86,6 +87,16 @@ export const useNavigation = (): NavigationObject => {
             },
             canGoBack: (): boolean => {
                 return context.stack.length > 1;
+            },
+            replace: (path: string, params?: any): void => {
+                context.setStack(() => {
+                    return [
+                        {
+                            params,
+                            path,
+                        },
+                    ];
+                });
             },
         };
     }, []);

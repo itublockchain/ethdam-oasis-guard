@@ -1,16 +1,42 @@
 import { css, StyleSheet } from "aphrodite";
 import Logo from "data-base64:~assets/logo.png";
-import { Setting2 } from "iconsax-react";
+import { ArrowLeft, Setting2 } from "iconsax-react";
 import type { ReactNode } from "react";
 
 import { Gap } from "~ui";
+import { Paths, useNavigation } from "~utils";
 
-export const Navbar = (): ReactNode => {
+type Props = {
+    hasBackButton?: boolean;
+};
+
+export const Navbar = ({ hasBackButton = false }: Props): ReactNode => {
+    const navigation = useNavigation();
+
     return (
         <div className={css(styles.wrapper)}>
-            <Gap direction="horizontal" size={32} />
+            {hasBackButton ? (
+                <ArrowLeft
+                    onClick={() => {
+                        navigation.pop();
+                    }}
+                    cursor="pointer"
+                    size={24}
+                    color="white"
+                />
+            ) : (
+                <Gap direction="horizontal" size={24} />
+            )}
+
             <img className={css(styles.logo)} src={Logo} />
-            <Setting2 cursor="pointer" size={24} color="white" />
+            <Setting2
+                onClick={() => {
+                    navigation.push(Paths.SETTINGS);
+                }}
+                cursor="pointer"
+                size={24}
+                color="white"
+            />
         </div>
     );
 };
@@ -18,12 +44,10 @@ export const Navbar = (): ReactNode => {
 const styles = StyleSheet.create({
     wrapper: {
         height: 48,
-        width: "100%",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 24,
-        paddingTop: 16,
+        padding: 16,
     },
     logo: {
         width: 164,
