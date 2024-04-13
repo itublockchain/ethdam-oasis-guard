@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 require("dotenv").config();
-console.log(process.env.PUBLIC_KEY_GASLESS_PROXY);
+
 async function main() {
   const GaslessProxy = await ethers.getContractFactory("GaslessProxy");
   const gaslessProxy = await GaslessProxy.deploy();
