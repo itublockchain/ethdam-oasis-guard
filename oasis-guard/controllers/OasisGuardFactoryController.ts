@@ -2,13 +2,7 @@ import { Identity } from "@semaphore-protocol/identity";
 import { ethers, type ContractReceipt } from "ethers";
 
 import { formatHex, sendGaslessTx } from "~utils";
-import {
-    AccountFactoryABI,
-    Address,
-    getFactoryContract,
-    getGaslessProxyContract,
-    SAPPHIRE_PROVIDER,
-} from "~web3";
+import { AccountFactoryABI, Address, getFactoryContract } from "~web3";
 
 export class OasisGuardFactoryController {
     static async genCreateAccount(

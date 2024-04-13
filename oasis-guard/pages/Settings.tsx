@@ -6,7 +6,7 @@ import { Navbar } from "~components";
 import { OasisGuardStorageController } from "~controllers";
 import { useSetUserStore, useUserStore } from "~store";
 import { Button, Typography } from "~ui";
-import { Paths, useNavigation } from "~utils";
+import { Paths, queryClient, useNavigation } from "~utils";
 
 export const Settings = (): ReactNode => {
     const setUserStore = useSetUserStore();
@@ -19,6 +19,7 @@ export const Settings = (): ReactNode => {
             resolve(true);
         });
 
+        queryClient.clear();
         setUserStore(null);
         navigation.replace(Paths.LANDING);
     };

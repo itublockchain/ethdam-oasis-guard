@@ -45,12 +45,16 @@ export const Landing = (): ReactNode => {
                     xAndY,
                     userId,
                 );
+            const accountAddress =
+                await OasisGuardFactoryController.genAccountAddress(xAndY);
 
-            if (accountReceipt != null) {
-                console.log(
-                    await OasisGuardFactoryController.genAccountAddress(xAndY),
-                );
-            }
+            const user = {
+                credentialId: registrationEncoded.credential.id,
+                publicKey: xAndY,
+                publicAddress: accountAddress,
+                userId,
+            };
+            navigateAndSetUserStore(user);
         },
     });
 

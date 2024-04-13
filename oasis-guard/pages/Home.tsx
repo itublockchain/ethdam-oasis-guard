@@ -27,8 +27,15 @@ import { useState, type ReactNode } from "react";
 import { Navbar } from "~components";
 import { OasisGuardPasswordController } from "~controllers";
 import { useUserStore } from "~store";
-import { Button, Gap, Typography } from "~ui";
-import { Dimensions, Paths, useNavigation, usePasswordNames } from "~utils";
+import { Button, Typography } from "~ui";
+import {
+    Dimensions,
+    Paths,
+    Queries,
+    queryClient,
+    useNavigation,
+    usePasswordNames,
+} from "~utils";
 
 export const Home = (): ReactNode => {
     const navigation = useNavigation();
@@ -148,6 +155,19 @@ function PasswordView({ name }: { name: string }): ReactNode {
         }, 2000);
     };
 
+    const deletePasswordMutation = useMutation({
+        mutationFn: async () => {
+            await OasisGuardPasswordController.deletePassword(
+                userStore.credentialId,
+                userStore.publicAddress,
+                name,
+            );
+            queryClient.refetchQueries({
+                queryKey: [Queries.NAMES],
+            });
+        },
+    });
+
     return (
         <div key={name} className={css(styles.passwordWrapper)}>
             <div className={css(styles.passwordWrapperInner)}>
@@ -226,6 +246,8 @@ function PasswordView({ name }: { name: string }): ReactNode {
                         Share
                     </Button>
                     <Button
+                        onClick={deletePasswordMutation.mutateAsync}
+                        isLoading={deletePasswordMutation.isPending}
                         color="danger"
                         height={32}
                         leftEl={<Trash size={16} color="white" />}
@@ -291,6 +313,8 @@ const styles = StyleSheet.create({
     mask: {
         marginTop: 6,
         color: "gray",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
     },
     actions: {
         marginLeft: "auto",

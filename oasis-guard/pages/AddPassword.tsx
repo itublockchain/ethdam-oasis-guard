@@ -25,10 +25,15 @@ export const AddPassword = (): ReactNode => {
     }, [password]);
 
     const isSaveDisabled = useMemo(() => {
-        if (website.trim() === "" || password.trim() === "" || isNameTaken) {
+        if (
+            website.trim() === "" ||
+            password.trim() === "" ||
+            isNameTaken ||
+            !isPasswordSecure
+        ) {
             return true;
         }
-    }, [isNameTaken, website, password]);
+    }, [isNameTaken, website, password, isPasswordSecure]);
 
     const addPasswordMutation = useMutation({
         mutationFn: async () => {
@@ -80,6 +85,7 @@ export const AddPassword = (): ReactNode => {
                                 OasisGuardPasswordController.generateRandomPassword(),
                             );
                         }}
+                        color="black"
                         styleOverrides={[styles.randomButton]}
                     >
                         Generate a Secure Password
@@ -91,7 +97,6 @@ export const AddPassword = (): ReactNode => {
                         addPasswordMutation.mutateAsync();
                     }}
                     isLoading={addPasswordMutation.isPending}
-                    color="black"
                     styleOverrides={[styles.saveButton]}
                 >
                     Save
