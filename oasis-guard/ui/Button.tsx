@@ -1,4 +1,5 @@
 import { css, StyleSheet } from "aphrodite";
+import { ChartCircle } from "iconsax-react";
 import { useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 interface Props extends ComponentPropsWithoutRef<"button"> {
@@ -10,6 +11,7 @@ interface Props extends ComponentPropsWithoutRef<"button"> {
     height?: number;
     onClick?: () => void;
     color?: "black" | "white";
+    isLoading?: boolean;
 }
 
 export const Button = ({
@@ -22,6 +24,7 @@ export const Button = ({
     children,
     onClick,
     color = "white",
+    isLoading,
     ...props
 }: Props): ReactNode => {
     const [hovered, setHovered] = useState(false);
@@ -76,7 +79,15 @@ export const Button = ({
                 setHovered(false);
             }}
         >
-            {leftEl != null && leftEl}
+            {isLoading ? (
+                <div className={css(styles.spinner, styles.iconLeftWrapper)}>
+                    <ChartCircle size="20" color={getTextStyles().color} />
+                </div>
+            ) : (
+                leftEl != null && (
+                    <div className={css(styles.iconLeftWrapper)}>{leftEl}</div>
+                )
+            )}
             <span
                 {...props}
                 style={{ ...getTextStyles() }}
@@ -84,7 +95,9 @@ export const Button = ({
             >
                 {children}
             </span>
-            {rightEl != null && rightEl}
+            {rightEl != null && (
+                <div className={css(styles.iconRightWrapper)}>{rightEl}</div>
+            )}
         </button>
     );
 };
@@ -109,11 +122,29 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     text: {
-        width: "100%",
         outline: "none",
         border: "none",
         fontSize: 15,
         fontFamily: "Roboto, sans-serif",
         fontWeight: 400,
+    },
+    spinner: {
+        animationName: {
+            "0%": {
+                transform: "rotate(0deg)",
+            },
+            "100%": {
+                transform: "rotate(360deg)",
+            },
+        },
+        animationIterationCount: "infinite",
+        animationDuration: "5s",
+        animationTimingFunction: "linear",
+    },
+    iconLeftWrapper: {
+        marginRight: 8,
+    },
+    iconRightWrapper: {
+        marginLeft: 8,
     },
 });
