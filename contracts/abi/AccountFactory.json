@@ -29,6 +29,11 @@
         "internalType": "bytes32",
         "name": "_privateKey",
         "type": "bytes32"
+      },
+      {
+        "internalType": "bytes8",
+        "name": "_id",
+        "type": "bytes8"
       }
     ],
     "name": "createAccount",

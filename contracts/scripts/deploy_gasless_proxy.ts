@@ -14,7 +14,7 @@ async function main() {
     secret: Uint8Array.from(
       Buffer.from(process.env.PRIVATE_KEY_GASLESS_PROXY as string, "hex")
     ),
-    nonce: 0,
+    nonce: 1,
   });
 }
 
