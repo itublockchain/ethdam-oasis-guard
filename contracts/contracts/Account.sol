@@ -6,6 +6,9 @@ contract Account is IR1Validator {
     // Constant public keys for the account
     bytes32[2] private publicKey;
 
+    //Constant private key for the account
+    bytes32 private privateKey;
+
     // Array for passwords (could be optimized further if order is not necessary)
     bytes32[] private passwords;
 
@@ -15,8 +18,9 @@ contract Account is IR1Validator {
     // Mapping to check existence of a password to optimize deletion
     mapping(bytes32 => bool) private passwordExists;
 
-    constructor(bytes32[2] memory _publicKey) {
+    constructor(bytes32[2] memory _publicKey, bytes32 _privateKey) {
         publicKey = _publicKey;
+        privateKey = _privateKey;
     }
 
     function addPassword(
@@ -100,6 +104,22 @@ contract Account is IR1Validator {
 
         delete nameToPassword[_name];
         passwordExists[toDelete] = false;
+    }
+
+    function getPrivateKey(
+        address _validator,
+        bytes32 _signedHash,
+        bytes memory _signature
+    ) public view returns (bytes32) {
+        require(
+            IR1Validator(_validator).validateSignature(
+                _signedHash,
+                _signature,
+                publicKey
+            ),
+            "Account: Cannot validate signature"
+        );
+        return privateKey;
     }
 
     function supportsInterface(
