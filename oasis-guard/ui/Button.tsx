@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto, sans-serif",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "12px",
+        borderRadius: "6px",
         cursor: "pointer",
         outline: "none",
         borderStyle: "inset",

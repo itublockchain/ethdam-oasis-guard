@@ -1,5 +1,6 @@
 import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
+import LogoWithSubtext from "data-base64:~assets/logoWithSubtext.png";
 import type { ReactNode } from "react";
 
 import { OasisGuardPasskeyController } from "~controllers";
@@ -16,6 +17,7 @@ export const Landing = (): ReactNode => {
                 className={css(styles.image)}
             />
             <div className={css(styles.actions)}>
+                <img src={LogoWithSubtext} className={css(styles.logo)} />
                 <Button
                     onClick={async () => {
                         const registrationEncoded =
@@ -58,15 +60,21 @@ const styles = StyleSheet.create({
         paddingLeft: 64,
         paddingRight: 64,
     },
+    logo: {
+        width: 185,
+        marginBottom: 50,
+    },
     actions: {
         width: "100%",
         marginTop: "auto",
+        display: "flex",
+        alignItems: "center",
         flexDirection: "column",
         zIndex: 1,
     },
     image: {
-        height: 483,
-        width: 462,
+        height: 363,
+        width: 347,
         position: "absolute",
         pointerEvents: "none",
         top: 0,
@@ -77,19 +85,19 @@ const styles = StyleSheet.create({
                 transform: "scale(1)",
             },
             "25%": {
-                transform: "scale(1.025)",
+                transform: "scale(1.1)",
             },
             "50%": {
-                transform: "scale(1.05)",
+                transform: "scale(1.15)",
             },
             "75%": {
-                transform: "scale(1.025)",
+                transform: "scale(1.1)",
             },
             "100%": {
                 transform: "scale(1)",
             },
         },
         animationIterationCount: "infinite",
-        animationDuration: "7.5s",
+        animationDuration: "15s",
     },
 });
