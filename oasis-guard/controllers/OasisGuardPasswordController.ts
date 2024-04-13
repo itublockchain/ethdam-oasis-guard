@@ -2,16 +2,17 @@ import { ethers, type ContractReceipt } from "ethers";
 
 import { OasisGuardPasskeyController } from "~controllers/OasisGuardPasskeyController";
 import { getFatSignature, sendGaslessTx } from "~utils";
-import { AccountABI, Address } from "~web3";
+import { AccountABI, Address, getAccountContract } from "~web3";
 
 export class OasisGuardPasswordController {
+    static VALIDATOR = Address.CONSTANT_VALIDATOR;
+
     static async addPassword(
         credentialId: string,
         publicAddress: string,
         password: string,
         name: string,
     ): Promise<ContractReceipt> {
-        const accountIFace = new ethers.utils.Interface(AccountABI);
         const authResponse = await OasisGuardPasskeyController.auth([
             credentialId,
         ]);
@@ -26,7 +27,7 @@ export class OasisGuardPasswordController {
             abi: AccountABI,
             contractAddress: publicAddress,
             params: [
-                Address.CONSTANT_VALIDATOR,
+                this.VALIDATOR,
                 signedHash,
                 signature,
                 ethers.utils.formatBytes32String(password),
@@ -37,7 +38,29 @@ export class OasisGuardPasswordController {
         return receipt;
     }
 
+    static async genPassword(
+        credentialId: string,
+        publicAddress: string,
+        name: string,
+    ): Promise<string> {
+        const authResponse = await OasisGuardPasskeyController.auth([
+            credentialId,
+        ]);
+        const signature = getFatSignature(authResponse);
+        const signedHash = ethers.utils.sha256(
+            Buffer.from(OasisGuardPasskeyController.CHALLENGE),
+        );
+
+        const password = await getAccountContract(publicAddress).getPassword(
+            this.VALIDATOR,
+            signedHash,
+            signature,
+            name,
+        );
+        return password;
+    }
+
     static generateRandomPassword(): string {
-        return Buffer.from(ethers.utils.randomBytes(32)).toString("hex");
+        return Buffer.from(ethers.utils.randomBytes(15)).toString("hex");
     }
 }

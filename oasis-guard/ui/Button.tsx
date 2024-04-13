@@ -10,7 +10,7 @@ interface Props extends ComponentPropsWithoutRef<"button"> {
     rightEl?: ReactNode;
     height?: number;
     onClick?: () => void;
-    color?: "black" | "white";
+    color?: "black" | "white" | "danger";
     isLoading?: boolean;
 }
 
@@ -43,6 +43,12 @@ export const Button = ({
                 borderColor: "white",
                 borderWidth: 1,
             };
+        } else if (color === "danger") {
+            return {
+                backgroundColor: "black",
+                borderColor: "red",
+                borderWidth: 1,
+            };
         }
     };
 
@@ -54,6 +60,10 @@ export const Button = ({
         } else if (color === "white") {
             return {
                 color: "black",
+            };
+        } else if (color === "danger") {
+            return {
+                color: "white",
             };
         }
     };

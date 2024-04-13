@@ -35,8 +35,8 @@ export const AddPassword = (): ReactNode => {
             await OasisGuardPasswordController.addPassword(
                 userStore.credentialId,
                 userStore.publicAddress,
-                website,
                 password,
+                website,
             );
             navigation.pop();
             queryClient.refetchQueries({

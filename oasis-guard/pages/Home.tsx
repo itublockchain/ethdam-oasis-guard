@@ -1,62 +1,239 @@
+import { useMutation } from "@tanstack/react-query";
 import { css, StyleSheet } from "aphrodite";
+import AnimationVideo from "data-base64:~assets/animation.mp4";
 import DefaultImage from "data-base64:~assets/default-password.png";
-import { Add, ArrowDown2, ArrowRight2, Eye } from "iconsax-react";
-import type { ReactNode } from "react";
+import Argent from "data-base64:~assets/logos/argent.png";
+import Binance from "data-base64:~assets/logos/binance.png";
+import Github from "data-base64:~assets/logos/github.png";
+import Google from "data-base64:~assets/logos/google.png";
+import Metamask from "data-base64:~assets/logos/metamask.png";
+import Rabby from "data-base64:~assets/logos/rabby.png";
+import Rainbow from "data-base64:~assets/logos/rainbow.png";
+import X from "data-base64:~assets/logos/x.png";
+import Zerion from "data-base64:~assets/logos/zerion.png";
+import {
+    Add,
+    ArrowDown2,
+    ArrowRight2,
+    ChartCircle,
+    Copy,
+    Eye,
+    EyeSlash,
+    Share,
+    Trash,
+} from "iconsax-react";
+import { useState, type ReactNode } from "react";
 
 import { Navbar } from "~components";
-import { Button, Typography } from "~ui";
+import { OasisGuardPasswordController } from "~controllers";
+import { useUserStore } from "~store";
+import { Button, Gap, Typography } from "~ui";
 import { Dimensions, Paths, useNavigation, usePasswordNames } from "~utils";
 
 export const Home = (): ReactNode => {
     const navigation = useNavigation();
-    const { data: passwordNames } = usePasswordNames();
+    const { data: passwordNames, isLoading } = usePasswordNames();
+
+    const hasNoPasswords = passwordNames.length === 0;
 
     return (
         <div className={css(styles.page)}>
             <Navbar />
             <div className={css(styles.floating)}>
-                <Button
-                    onClick={() => {
-                        navigation.push(Paths.ADD_PASSWORD);
-                    }}
-                    styleOverrides={[styles.circle]}
-                >
-                    <Add />
-                </Button>
+                {!hasNoPasswords && (
+                    <Button
+                        onClick={() => {
+                            navigation.push(Paths.ADD_PASSWORD);
+                        }}
+                        styleOverrides={[styles.circle]}
+                    >
+                        <Add />
+                    </Button>
+                )}
             </div>
             <div className={css(styles.passwords)}>
-                {passwordNames.map((name) => {
-                    return <PasswordView key={name} name={name} />;
-                })}
+                {!isLoading ? (
+                    <>
+                        {hasNoPasswords && (
+                            <>
+                                <video
+                                    loop
+                                    autoPlay
+                                    className={css(styles.video)}
+                                >
+                                    <source
+                                        src={AnimationVideo}
+                                        type="video/mp4"
+                                    />
+                                </video>
+                                <Button
+                                    onClick={() => {
+                                        navigation.push(Paths.ADD_PASSWORD);
+                                    }}
+                                >
+                                    Get Started
+                                </Button>
+                            </>
+                        )}
+                        {passwordNames.map((name) => {
+                            return <PasswordView key={name} name={name} />;
+                        })}
+                    </>
+                ) : (
+                    <div className={css(styles.spinner)}>
+                        <ChartCircle size={32} color="white" />
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 function PasswordView({ name }: { name: string }): ReactNode {
+    const [expanded, setExpanded] = useState(false);
+    const [resolvedPassword, setResolvedPassword] = useState<string | null>(
+        null,
+    );
+    const [copied, setCopied] = useState(false);
+    const userStore = useUserStore();
+
+    const resolvePassword = async (reveal: boolean) => {
+        const password = await OasisGuardPasswordController.genPassword(
+            userStore.credentialId,
+            userStore.publicAddress,
+            name,
+        );
+        if (reveal) {
+            setResolvedPassword(password);
+        }
+        return password;
+    };
+
+    const copyMutation = useMutation({
+        mutationFn: () => resolvePassword(false),
+    });
+
+    const revealMutation = useMutation({
+        mutationFn: () => resolvePassword(true),
+    });
+
     const getPasswordNameIcon = () => {
+        if (name.includes("google")) {
+            return Google;
+        } else if (name.includes("github")) {
+            return Github;
+        } else if (name.includes("metamask")) {
+            return Metamask;
+        } else if (name.includes("binance")) {
+            return Binance;
+        } else if (name.includes("argent")) {
+            return Argent;
+        } else if (name.includes("zerion")) {
+            return Zerion;
+        } else if (name.includes("rabby")) {
+            return Rabby;
+        } else if (name.includes("rainbow")) {
+            return Rainbow;
+        } else if (name.includes("twitter")) {
+            return X;
+        }
         return DefaultImage;
+    };
+
+    const copyToClipboard = async (copyright: string) => {
+        await navigator.clipboard.writeText(copyright);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
     };
 
     return (
         <div key={name} className={css(styles.passwordWrapper)}>
-            <img className={css(styles.image)} src={getPasswordNameIcon()} />
-            <div className={css(styles.meta)}>
-                <Typography styleOverrides={[styles.password]} fontSize={14}>
-                    {name}
-                </Typography>
-                <Typography fontSize={10} styleOverrides={[styles.mask]}>
-                    Password: *******
-                </Typography>
-            </div>
-            <div className={css(styles.actions)}>
-                <div className={css(styles.eye)}>
-                    <Eye size={20} color="white" />
+            <div className={css(styles.passwordWrapperInner)}>
+                <img
+                    className={css(styles.image)}
+                    src={getPasswordNameIcon()}
+                />
+                <div className={css(styles.meta)}>
+                    <Typography
+                        styleOverrides={[styles.password]}
+                        fontSize={14}
+                    >
+                        {name}
+                    </Typography>
+                    <Typography fontSize={12} styleOverrides={[styles.mask]}>
+                        {resolvedPassword || "************"}
+                    </Typography>
                 </div>
-                <div className={css(styles.arrow)}>
-                    <ArrowRight2 size={20} color="white" />
+                <div className={css(styles.actions)}>
+                    <div
+                        onClick={() => {
+                            if (resolvedPassword) {
+                                setResolvedPassword(null);
+                            } else {
+                                revealMutation.mutate();
+                            }
+                        }}
+                        className={css(styles.eye)}
+                    >
+                        {revealMutation.isPending ? (
+                            <div className={css(styles.spinner2)}>
+                                <ChartCircle size={20} color="white" />
+                            </div>
+                        ) : resolvedPassword ? (
+                            <EyeSlash size={20} color="white" />
+                        ) : (
+                            <Eye size={20} color="white" />
+                        )}
+                    </div>
+                    <div
+                        onClick={() => setExpanded(!expanded)}
+                        className={css(styles.arrow)}
+                    >
+                        {expanded ? (
+                            <ArrowDown2 size={20} color="white" />
+                        ) : (
+                            <ArrowRight2 size={20} color="white" />
+                        )}
+                    </div>
                 </div>
             </div>
+            {expanded && (
+                <div className={css(styles.buttons)}>
+                    <Button
+                        isLoading={copyMutation.isPending}
+                        onClick={async () => {
+                            if (resolvedPassword) {
+                                await copyToClipboard(resolvedPassword);
+                            } else {
+                                const password =
+                                    await copyMutation.mutateAsync();
+                                await copyToClipboard(password);
+                            }
+                        }}
+                        leftEl={<Copy size={16} color="white" />}
+                        color="black"
+                        height={32}
+                    >
+                        {copied ? "Copied" : "Copy"}
+                    </Button>
+                    <Button
+                        color="black"
+                        height={32}
+                        leftEl={<Share size={16} color="white" />}
+                    >
+                        Share
+                    </Button>
+                    <Button
+                        color="danger"
+                        height={32}
+                        leftEl={<Trash size={16} color="white" />}
+                    >
+                        Delete
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }
@@ -82,14 +259,21 @@ const styles = StyleSheet.create({
         paddingRight: 16,
         display: "flex",
         flexDirection: "column",
+        marginBottom: 48,
     },
     passwordWrapper: {
         width: "100%",
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
         paddingBottom: 12,
         paddingTop: 12,
         borderBottom: "1px solid #121212",
+        userSelect: "none",
+    },
+    passwordWrapperInner: {
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
     },
     meta: {
         display: "flex",
@@ -122,5 +306,48 @@ const styles = StyleSheet.create({
     password: {
         textOverflow: "ellipsis",
         overflow: "hidden",
+    },
+    spinner: {
+        animationName: {
+            "0%": {
+                transform: "rotate(0deg)",
+            },
+            "100%": {
+                transform: "rotate(360deg)",
+            },
+        },
+        animationIterationCount: "infinite",
+        animationDuration: "1s",
+        animationTimingFunction: "linear",
+        width: 32,
+        height: 32,
+        margin: "auto",
+        marginTop: 24,
+    },
+    spinner2: {
+        animationName: {
+            "0%": {
+                transform: "rotate(0deg)",
+            },
+            "100%": {
+                transform: "rotate(360deg)",
+            },
+        },
+        animationIterationCount: "infinite",
+        animationDuration: "1s",
+        animationTimingFunction: "linear",
+        width: 20,
+        height: 20,
+    },
+    video: {
+        margin: "auto",
+        height: 320,
+        width: 320,
+        marginBottom: 32,
+    },
+    buttons: {
+        marginTop: 12,
+        display: "flex",
+        gap: 8,
     },
 });
