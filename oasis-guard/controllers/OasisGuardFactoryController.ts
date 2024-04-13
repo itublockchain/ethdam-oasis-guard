@@ -1,19 +1,40 @@
 import { Identity } from "@semaphore-protocol/identity";
-import type { ContractReceipt } from "ethers";
+import { ethers, type ContractReceipt } from "ethers";
 
 import { formatHex } from "~utils";
-import { getFactoryContract } from "~web3";
+import {
+    AccountFactoryABI,
+    Address,
+    getFactoryContract,
+    getGaslessProxyContract,
+    SAPPHIRE_PROVIDER,
+} from "~web3";
 
 export class OasisGuardFactoryController {
     static async genCreateAccount(
         publicKey: [string, string],
     ): Promise<ContractReceipt> {
         const { privateKey: semaphoreIdentityPK } = new Identity();
-        const tx = await getFactoryContract(semaphoreIdentityPK).createAccount(
-            publicKey,
-            formatHex(semaphoreIdentityPK),
+        const accountFactoryInterface = new ethers.utils.Interface(
+            AccountFactoryABI,
         );
-        const receipt: ContractReceipt = await tx.wait();
+        const calldata = accountFactoryInterface.encodeFunctionData(
+            "createAccount",
+            [publicKey, formatHex(semaphoreIdentityPK)],
+        );
+
+        const accountCreationCalldata =
+            await getGaslessProxyContract().makeProxyTx(
+                Address.FACTORY,
+                calldata,
+            );
+
+        const tx = await SAPPHIRE_PROVIDER.sendTransaction(
+            accountCreationCalldata,
+        );
+        const receipt = await tx.wait();
+
+        console.log(receipt);
         return receipt;
     }
 

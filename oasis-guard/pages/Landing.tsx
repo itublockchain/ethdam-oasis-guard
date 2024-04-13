@@ -36,12 +36,23 @@ export const Landing = (): ReactNode => {
         },
     });
 
+    const authMutation = useMutation({
+        mutationFn: async () => {
+            const authResponse = await OasisGuardPasskeyController.auth();
+            authResponse.authenticatorData;
+        },
+    });
+
     return (
         <div className={css(styles.page)}>
             <img src={LandingImage} className={css(styles.image)} />
             <div className={css(styles.actions)}>
                 <img src={LogoWithSubtext} className={css(styles.logo)} />
-                <Button onClick={registerMutation.mutateAsync} color="black">
+                <Button
+                    isLoading={registerMutation.isPending}
+                    onClick={registerMutation.mutateAsync}
+                    color="black"
+                >
                     Sign Up With Passkeys
                 </Button>
                 <Gap size={12} />
