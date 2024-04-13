@@ -10,7 +10,7 @@ async function main() {
   //const Gasless = await ethers.getContractFactory("GaslessProxy");
   const gasless = await ethers.getContractAt(
     "GaslessProxy",
-    "0x34b9F2E1d9eF8e270E5AF6e0991bc8023E9906C3"
+    "0x7DB90F79acAB311271E217b4712082d250F8e8d7"
   );
   const innercall = commentBox.interface.encodeFunctionData("comment", [
     "Hello, free world!",
