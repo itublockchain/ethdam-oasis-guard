@@ -8,7 +8,7 @@ import { Paths, useNavigation, usePasswordNames } from "~utils";
 
 export const Home = (): ReactNode => {
     const navigation = useNavigation();
-    const { data } = usePasswordNames();
+    const { data: passwordNames } = usePasswordNames();
 
     return (
         <div className={css(styles.page)}>
@@ -22,6 +22,15 @@ export const Home = (): ReactNode => {
                 >
                     <Add />
                 </Button>
+            </div>
+            <div className={css(styles.passwords)}>
+                {passwordNames.map((name) => {
+                    return (
+                        <div className={css(styles.passwordWrapper)}>
+                            {name}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
@@ -41,5 +50,14 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 48,
+    },
+    passwords: {
+        paddingLeft: 16,
+        paddingRight: 16,
+        display: "flex",
+        flexDirection: "column",
+    },
+    passwordWrapper: {
+        display: "flex",
     },
 });

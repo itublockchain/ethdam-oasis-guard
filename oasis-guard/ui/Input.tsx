@@ -8,6 +8,8 @@ interface Props extends ComponentPropsWithoutRef<"input"> {
     styleOverrides?: object[];
     containerStyleOverrides?: object[];
     label?: string;
+    error?: string;
+    warning?: string;
 }
 
 export const Input = ({
@@ -15,6 +17,8 @@ export const Input = ({
     containerStyleOverrides = [],
     styleOverrides = [],
     label,
+    error,
+    warning,
     ...props
 }: Props): ReactNode => {
     return (
@@ -31,6 +35,16 @@ export const Input = ({
                 {...props}
                 className={css(styles.input, ...styleOverrides)}
             />
+            {error && (
+                <Typography fontSize={14} styleOverrides={[styles.error]}>
+                    {error}
+                </Typography>
+            )}
+            {warning && (
+                <Typography fontSize={14} styleOverrides={[styles.warning]}>
+                    {warning}
+                </Typography>
+            )}
         </div>
     );
 };
@@ -54,5 +68,13 @@ const styles = StyleSheet.create({
     },
     label: {
         marginBottom: 8,
+    },
+    error: {
+        color: "red",
+        marginTop: 8,
+    },
+    warning: {
+        color: "orange",
+        marginTop: 8,
     },
 });

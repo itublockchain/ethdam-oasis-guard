@@ -7,7 +7,7 @@ import { getAccountContract } from "~web3";
 export const usePasswordNames = () => {
     const userStore = useUserStore();
 
-    return useQuery({
+    const { data, ...rest } = useQuery({
         queryKey: [Queries.NAMES],
         queryFn: async () => {
             try {
@@ -15,11 +15,13 @@ export const usePasswordNames = () => {
                     userStore.publicAddress,
                 );
                 const names = await accountContract.getNames();
-                return names;
+                return names as string[];
             } catch (err) {
-                console.warn(err);
+                console.log(err);
                 return [];
             }
         },
     });
+
+    return { data: data ?? [], ...rest };
 };

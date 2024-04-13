@@ -25,6 +25,7 @@ export const Button = ({
     onClick,
     color = "white",
     isLoading,
+    disabled,
     ...props
 }: Props): ReactNode => {
     const [hovered, setHovered] = useState(false);
@@ -64,8 +65,10 @@ export const Button = ({
             className={css(
                 styles.wrapper,
                 hovered ? styles.hovered : null,
+                disabled ? styles.disabled : null,
                 ...styleOverrides,
             )}
+            disabled={disabled}
             style={{
                 height,
                 ...getColorStyles(),
@@ -146,5 +149,8 @@ const styles = StyleSheet.create({
     },
     iconRightWrapper: {
         marginLeft: 8,
+    },
+    disabled: {
+        opacity: 0.5,
     },
 });

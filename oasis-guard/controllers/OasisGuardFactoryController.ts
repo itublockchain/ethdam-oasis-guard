@@ -1,7 +1,7 @@
 import { Identity } from "@semaphore-protocol/identity";
 import { ethers, type ContractReceipt } from "ethers";
 
-import { formatHex } from "~utils";
+import { formatHex, sendGaslessTx } from "~utils";
 import {
     AccountFactoryABI,
     Address,
@@ -16,27 +16,14 @@ export class OasisGuardFactoryController {
         userId: string,
     ): Promise<ContractReceipt> {
         const { privateKey: semaphoreIdentityPK } = new Identity();
-        const accountFactoryInterface = new ethers.utils.Interface(
-            AccountFactoryABI,
-        );
-        const calldata = accountFactoryInterface.encodeFunctionData(
-            "createAccount",
-            [publicKey, formatHex(semaphoreIdentityPK), userId],
-        );
 
-        const accountCreationMetaTx =
-            await getGaslessProxyContract().makeProxyTx(
-                Address.FACTORY,
-                calldata,
-                10_000_000,
-            );
+        const receipt = await sendGaslessTx({
+            contractAddress: Address.FACTORY,
+            abi: AccountFactoryABI,
+            params: [publicKey, formatHex(semaphoreIdentityPK), userId],
+            functionName: "createAccount",
+        });
 
-        const tx = await SAPPHIRE_PROVIDER.sendTransaction(
-            accountCreationMetaTx,
-        );
-        const receipt = await tx.wait();
-
-        console.log(receipt);
         return receipt;
     }
 

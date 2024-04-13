@@ -3,12 +3,13 @@ import type { ReactNode } from "react";
 
 import { Navbar } from "~components";
 import { OasisGuardStorageController } from "~controllers";
-import { useSetUserStore } from "~store";
-import { Button } from "~ui";
+import { useSetUserStore, useUserStore } from "~store";
+import { Button, Typography } from "~ui";
 import { Paths, useNavigation } from "~utils";
 
 export const Settings = (): ReactNode => {
     const setUserStore = useSetUserStore();
+    const userStore = useUserStore();
     const navigation = useNavigation();
     const logout = async () => {
         await new Promise((resolve) => {
@@ -23,7 +24,9 @@ export const Settings = (): ReactNode => {
     return (
         <div className={css(styles.page)}>
             <Navbar hasBackButton={navigation.canGoBack()} />
+
             <div className={css(styles.container)}>
+                <Typography>{userStore.publicAddress}</Typography>
                 <Button onClick={logout}>Logout</Button>
             </div>
         </div>
@@ -37,7 +40,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
     },
     container: {
-        paddingLeft: 16,
-        paddingRight: 16,
+        padding: 16,
     },
 });

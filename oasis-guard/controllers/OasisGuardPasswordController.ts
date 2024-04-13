@@ -1,13 +1,8 @@
 import { ethers, type ContractReceipt } from "ethers";
 
 import { OasisGuardPasskeyController } from "~controllers/OasisGuardPasskeyController";
-import { getFatSignature } from "~utils";
-import {
-    AccountABI,
-    Address,
-    getGaslessProxyContract,
-    SAPPHIRE_PROVIDER,
-} from "~web3";
+import { getFatSignature, sendGaslessTx } from "~utils";
+import { AccountABI, Address } from "~web3";
 
 export class OasisGuardPasswordController {
     static async addPassword(
@@ -27,22 +22,22 @@ export class OasisGuardPasswordController {
             Buffer.from(OasisGuardPasskeyController.CHALLENGE),
         );
 
-        const calldata = accountIFace.encodeFunctionData("addPassword", [
-            Address.VALIDATOR,
-            signedHash,
-            signature,
-            ethers.utils.formatBytes32String(password),
-            name,
-        ]);
-
-        const addPasswordMetaTx = await getGaslessProxyContract().makeProxyTx(
-            publicAddress,
-            calldata,
-            500_000,
-        );
-
-        const tx = await SAPPHIRE_PROVIDER.sendTransaction(addPasswordMetaTx);
-        const receipt = await tx.wait();
+        const receipt = await sendGaslessTx({
+            abi: AccountABI,
+            contractAddress: publicAddress,
+            params: [
+                Address.CONSTANT_VALIDATOR,
+                signedHash,
+                signature,
+                ethers.utils.formatBytes32String(password),
+                name,
+            ],
+            functionName: "addPassword",
+        });
         return receipt;
+    }
+
+    static generateRandomPassword(): string {
+        return Buffer.from(ethers.utils.randomBytes(32)).toString("hex");
     }
 }
