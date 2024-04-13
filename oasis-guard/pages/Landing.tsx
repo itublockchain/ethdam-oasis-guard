@@ -1,12 +1,41 @@
+import { useMutation } from "@tanstack/react-query";
 import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
 import LogoWithSubtext from "data-base64:~assets/logoWithSubtext.png";
 import type { ReactNode } from "react";
 
-import { OasisGuardPasskeyController } from "~controllers";
+import {
+    OasisGuardFactoryController,
+    OasisGuardPasskeyController,
+} from "~controllers";
 import { Button, Gap } from "~ui";
 
 export const Landing = (): ReactNode => {
+    const registerMutation = useMutation({
+        mutationFn: async () => {
+            const registrationEncoded =
+                await OasisGuardPasskeyController.register();
+            const publicKeyBase64Url = registrationEncoded.credential.publicKey;
+            const publicKey =
+                await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
+                    publicKeyBase64Url,
+                );
+            const xAndY =
+                OasisGuardPasskeyController.getXandYFromPublicKey(publicKey);
+
+            const accountReceipt =
+                await OasisGuardFactoryController.genCreateAccount(xAndY);
+
+            console.log("AccountReceipt", accountReceipt);
+
+            if (accountReceipt != null) {
+                console.log(
+                    await OasisGuardFactoryController.genAccountAddress(xAndY),
+                );
+            }
+        },
+    });
+
     return (
         <div className={css(styles.page)}>
             <img
@@ -18,23 +47,7 @@ export const Landing = (): ReactNode => {
             />
             <div className={css(styles.actions)}>
                 <img src={LogoWithSubtext} className={css(styles.logo)} />
-                <Button
-                    onClick={async () => {
-                        const registrationEncoded =
-                            await OasisGuardPasskeyController.register();
-                        const publicKeyBase64Url =
-                            registrationEncoded.credential.publicKey;
-                        const publicKey =
-                            await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
-                                publicKeyBase64Url,
-                            );
-                        const xAndY =
-                            OasisGuardPasskeyController.getXandYFromPublicKey(
-                                publicKey,
-                            );
-                    }}
-                    color="black"
-                >
+                <Button onClick={registerMutation.mutateAsync} color="black">
                     Sign Up With Passkeys
                 </Button>
                 <Gap size={12} />

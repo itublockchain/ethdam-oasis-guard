@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@semaphore-protocol/identity':
+    specifier: 4.0.0-beta.7
+    version: 4.0.0-beta.7
   cbor:
     specifier: ^9.0.2
     version: 9.0.2
@@ -2575,6 +2578,15 @@ packages:
       config-chain: 1.1.13
     dev: false
 
+  /@semaphore-protocol/identity@4.0.0-beta.7:
+    resolution: {integrity: sha512-e7br6cz9stuzw9Z0NoC3hTQ32Fgh5WT+zx4INEuvpwLoDTnsEhuCG8xoXVSG3HkymbpbVWABAcQb/7K8fmivnQ==}
+    dependencies:
+      '@zk-kit/baby-jubjub': 0.3.0
+      '@zk-kit/eddsa-poseidon': 0.10.0
+      '@zk-kit/utils': 0.8.1
+      poseidon-lite: 0.2.0
+    dev: false
+
   /@sindresorhus/is@5.6.0:
     resolution: {integrity: sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==}
     engines: {node: '>=14.16'}
@@ -3133,6 +3145,32 @@ packages:
 
   /@vue/shared@3.3.4:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
+    dev: false
+
+  /@zk-kit/baby-jubjub@0.3.0:
+    resolution: {integrity: sha512-mA3/M/+4C2vDtc0SpXf/q/nsvwBh+s42ou176sgDzqIBQD/u/N+LaLGorDh+X5AD3dVMHb8rheFpnnrJmjsqdA==}
+    dependencies:
+      '@zk-kit/utils': 0.6.0
+    dev: false
+
+  /@zk-kit/eddsa-poseidon@0.10.0:
+    resolution: {integrity: sha512-vfHupJeoj0YojulF+SUbeOD6MOamWV6uU/HVFwB7sJNA0N7gnzcjaN1aC5OYr0+5PHui/SYebzKA0LNCL+7M9g==}
+    dependencies:
+      '@zk-kit/baby-jubjub': 0.3.0
+      '@zk-kit/utils': 0.8.1
+      buffer: 6.0.3
+    dev: false
+
+  /@zk-kit/utils@0.6.0:
+    resolution: {integrity: sha512-sUF1yVjlGmm7/NIN/+d+N8WOcI77bTzgV5+vZmp/S7lXcy4fmO+5TdHERRsDbs8Ep8K33EOC6V+U+JXzmjSe5A==}
+    dependencies:
+      buffer: 6.0.3
+    dev: false
+
+  /@zk-kit/utils@0.8.1:
+    resolution: {integrity: sha512-m5cvnYo5IBZQCO8H5X0Mw3rGRGEoSqlYXVVF1+4M9IT3olDWcJHLPRqtYGF9zNf+vXV/21srpZ0hX3X2Lzp1TQ==}
+    dependencies:
+      buffer: 6.0.3
     dev: false
 
   /abortcontroller-polyfill@1.7.5:
@@ -5338,6 +5376,10 @@ packages:
       - velocityjs
       - walrus
       - whiskers
+    dev: false
+
+  /poseidon-lite@0.2.0:
+    resolution: {integrity: sha512-vivDZnGmz8W4G/GzVA72PXkfYStjilu83rjjUfpL4PueKcC8nfX6hCPh2XhoC5FBgC6y0TA3YuUeUo5YCcNoig==}
     dev: false
 
   /postcss-load-config@4.0.2:
