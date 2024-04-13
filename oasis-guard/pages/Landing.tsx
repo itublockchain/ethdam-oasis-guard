@@ -40,11 +40,7 @@ export const Landing = (): ReactNode => {
             const xAndY =
                 OasisGuardPasskeyController.getXandYFromPublicKey(publicKey);
 
-            const accountReceipt =
-                await OasisGuardFactoryController.genCreateAccount(
-                    xAndY,
-                    userId,
-                );
+            await OasisGuardFactoryController.genCreateAccount(xAndY, userId);
             const accountAddress =
                 await OasisGuardFactoryController.genAccountAddress(xAndY);
 

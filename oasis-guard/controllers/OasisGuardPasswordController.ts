@@ -38,6 +38,41 @@ export class OasisGuardPasswordController {
         return receipt;
     }
 
+    static async addPasswords(
+        credentialId: string,
+        publicAddress: string,
+        passwords: string[],
+        names: string[],
+    ): Promise<ContractReceipt> {
+        const authResponse = await OasisGuardPasskeyController.auth([
+            credentialId,
+        ]);
+
+        const signature = getFatSignature(authResponse);
+
+        const signedHash = ethers.utils.sha256(
+            Buffer.from(OasisGuardPasskeyController.CHALLENGE),
+        );
+
+        const passwordsFormatted = passwords.map((password) => {
+            return ethers.utils.formatBytes32String(password);
+        });
+
+        const receipt = await sendGaslessTx({
+            abi: AccountABI,
+            contractAddress: publicAddress,
+            params: [
+                this.VALIDATOR,
+                signedHash,
+                signature,
+                passwordsFormatted,
+                names,
+            ],
+            functionName: "addPasswords",
+        });
+        return receipt;
+    }
+
     static async deletePassword(
         credentialId: string,
         publicAddress: string,

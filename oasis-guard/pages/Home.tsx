@@ -5,7 +5,7 @@ import DefaultImage from "data-base64:~assets/default-password.png";
 import Argent from "data-base64:~assets/logos/argent.png";
 import Binance from "data-base64:~assets/logos/binance.png";
 import Github from "data-base64:~assets/logos/github.png";
-import Google from "data-base64:~assets/logos/google.png";
+import GoogleImage from "data-base64:~assets/logos/google.png";
 import Metamask from "data-base64:~assets/logos/metamask.png";
 import Rabby from "data-base64:~assets/logos/rabby.png";
 import Rainbow from "data-base64:~assets/logos/rainbow.png";
@@ -19,10 +19,12 @@ import {
     Copy,
     Eye,
     EyeSlash,
+    Google,
     Share,
     Trash,
 } from "iconsax-react";
-import { useState, type ReactNode } from "react";
+import Papa from "papaparse";
+import { useRef, useState, type ReactNode } from "react";
 
 import { Navbar } from "~components";
 import { OasisGuardPasswordController } from "~controllers";
@@ -37,11 +39,35 @@ import {
     usePasswordNames,
 } from "~utils";
 
+type ImportData = {
+    name: string;
+    password: string;
+};
+
 export const Home = (): ReactNode => {
     const navigation = useNavigation();
     const { data: passwordNames, isLoading } = usePasswordNames();
+    const inputRef = useRef(null);
+    const [file, setFile] = useState<File | null>(null);
+    const userStore = useUserStore();
 
     const hasNoPasswords = passwordNames.length === 0;
+
+    const addPasswordsMutation = useMutation({
+        mutationFn: async (data: Array<ImportData>) => {
+            const names = data.map((item) => item.name);
+            const passwords = data.map((item) => item.password);
+            await OasisGuardPasswordController.addPasswords(
+                userStore.credentialId,
+                userStore.publicAddress,
+                passwords,
+                names,
+            );
+            queryClient.refetchQueries({
+                queryKey: [Queries.NAMES],
+            });
+        },
+    });
 
     return (
         <div className={css(styles.page)}>
@@ -80,6 +106,38 @@ export const Home = (): ReactNode => {
                                 >
                                     Get Started
                                 </Button>
+                                <input
+                                    onChange={(e) => {
+                                        const _file = e.target.files[0];
+                                        setFile(_file);
+                                        Papa.parse(_file, {
+                                            header: true,
+                                            skipEmptyLines: true,
+                                            complete: async function (results: {
+                                                data: Array<ImportData>;
+                                            }) {
+                                                await addPasswordsMutation.mutateAsync(
+                                                    results.data,
+                                                );
+                                            },
+                                        });
+                                    }}
+                                    value={file?.name}
+                                    ref={inputRef}
+                                    type="file"
+                                    style={{ display: "none" }}
+                                />
+                                {/* <Button
+                                    isLoading={addPasswordsMutation.isPending}
+                                    onClick={() => {
+                                        inputRef.current.click();
+                                    }}
+                                    color="black"
+                                    leftEl={<Google color="white" />}
+                                    styleOverrides={[styles.import]}
+                                >
+                                    Import from Google
+                                </Button> */}
                             </>
                         )}
                         {passwordNames.map((name) => {
@@ -126,7 +184,7 @@ function PasswordView({ name }: { name: string }): ReactNode {
 
     const getPasswordNameIcon = () => {
         if (name.includes("google")) {
-            return Google;
+            return GoogleImage;
         } else if (name.includes("github")) {
             return Github;
         } else if (name.includes("metamask")) {
@@ -373,5 +431,8 @@ const styles = StyleSheet.create({
         marginTop: 12,
         display: "flex",
         gap: 8,
+    },
+    import: {
+        marginTop: 8,
     },
 });
