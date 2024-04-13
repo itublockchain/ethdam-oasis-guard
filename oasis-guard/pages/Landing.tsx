@@ -72,6 +72,7 @@ export const Landing = (): ReactNode => {
                 </Button>
                 <Gap size={12} />
                 <Button
+                    isLoading={authMutation.isPending}
                     onClick={async () => {
                         await authMutation.mutateAsync();
                     }}
