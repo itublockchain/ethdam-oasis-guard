@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "description": "A manager extension works on Oasis Network.",
     "author": "@itublockchain",
+    "type": "module",
     "scripts": {
         "dev": "plasmo dev",
         "build": "plasmo build",

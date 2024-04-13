@@ -1,5 +1,5 @@
 import { Identity } from "@semaphore-protocol/identity";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 import {
     AccountABI,
@@ -8,6 +8,16 @@ import {
     SAPPHIRE_PROVIDER,
     SemaphoreABI,
 } from "~web3";
+
+type SemaphoreProof = {
+    merkleTreeDepth: number | bigint;
+    merkleTreeRoot: string; // Using string to handle big numbers safely
+    nullifier: string; // Using string to handle big numbers safely
+    message: string; // Using string to handle big numbers safely
+    scope: string; // Using string to handle big numbers safely
+    _groupId: string; // Using string to handle big numbers safely
+    points: string[]; // Array of strings for big numbers
+};
 
 const provider = SAPPHIRE_PROVIDER;
 
@@ -18,26 +28,20 @@ const accountFactory = new ethers.Contract(
 );
 
 const semaphore = new ethers.Contract(
-    Address.SEMAPHORE,
-    SemaphoreABI,
-    provider,
-);
-
-const semaphoreVerifier = new ethers.Contract(
-    Address.SEMAPHORE_VERIFIER,
+    Address.SEMAPHORIDITE,
     SemaphoreABI,
     provider,
 );
 
 const readOnlyAccountFactory = accountFactory.connect(provider);
 const gaslessProxy = async (calldata: string, address: string) => {
-    const accountCreationCalldata = await getGaslessProxyContract().makeProxyTx(
+    const CALLDATA = await getGaslessProxyContract().makeProxyTx(
         address,
         calldata,
         10_000_000,
     );
 
-    const tx = await SAPPHIRE_PROVIDER.sendTransaction(accountCreationCalldata);
+    const tx = await SAPPHIRE_PROVIDER.sendTransaction(CALLDATA);
     const receipt = await tx.wait();
 
     console.log(receipt);
@@ -76,5 +80,28 @@ export const createGroup = async (privateKey: string) => {
         "createGroup",
         [commitment],
     );
-    gaslessProxy(encodedData);
+    gaslessProxy(Address.SEMAPHORE, encodedData);
+};
+
+export const addMemberToGroup = async (
+    privateKey: string,
+    groupId: BigNumber,
+) => {
+    const { publicKey, commitment } = new Identity(privateKey);
+    const writeSemaphore = semaphore.attach(publicKey.toString());
+    const encodedData = writeSemaphore.interface.encodeFunctionData(
+        "addMember",
+        [groupId, commitment],
+    );
+};
+
+export const verifyProof = async (
+    groupId: BigNumber,
+    semaphoreProof: SemaphoreProof,
+) => {
+    const encodedData = semaphore.interface.encodeFunctionData("verifyProof", [
+        groupId,
+        semaphoreProof,
+    ]);
+    gaslessProxy(Address.SEMAPHORE, encodedData);
 };

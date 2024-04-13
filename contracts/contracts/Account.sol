@@ -60,6 +60,7 @@ contract Account is IR1Validator {
         nameToPassword[_name] = _password;
         names.push(_name);
         passwordExists[_password] = true;
+        nameExists[_name] = true;
     }
 
     function getPassword(
