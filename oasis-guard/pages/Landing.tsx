@@ -26,6 +26,10 @@ export const Landing = (): ReactNode => {
                             await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
                                 publicKeyBase64Url,
                             );
+                        const xAndY =
+                            OasisGuardPasskeyController.getXandYFromPublicKey(
+                                publicKey,
+                            );
                     }}
                     color="black"
                 >

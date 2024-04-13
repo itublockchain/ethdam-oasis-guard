@@ -85,6 +85,16 @@ export class OasisGuardPasskeyController {
         return "0x" + xHex + yHex;
     }
 
+    static getXandYFromPublicKey(publicKey: string): [string, string] {
+        const sliced = publicKey.startsWith("0x")
+            ? publicKey.slice(2)
+            : publicKey;
+
+        const x = sliced.slice(0, 64);
+        const y = sliced.slice(64, 128);
+        return [x, y];
+    }
+
     static base64toBase64Url(base64: string): string {
         return base64
             .replaceAll("+", "-")
