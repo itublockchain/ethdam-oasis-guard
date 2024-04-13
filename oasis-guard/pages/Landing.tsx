@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
             },
         },
         animationIterationCount: "infinite",
-        animationDuration: "15s",
+        animationDuration: "10s",
         animationTimingFunction: "linear",
     },
 });
