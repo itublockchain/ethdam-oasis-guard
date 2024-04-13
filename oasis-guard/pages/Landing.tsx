@@ -3,16 +3,27 @@ import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
 import LogoWithSubtext from "data-base64:~assets/logoWithSubtext.png";
 import { ethers } from "ethers";
-import { useId, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import {
     OasisGuardFactoryController,
     OasisGuardPasskeyController,
+    OasisGuardStorageController,
 } from "~controllers";
+import { useSetUserStore, type User } from "~store";
 import { Button, Gap } from "~ui";
-import { formatHex } from "~utils";
+import { formatHex, Paths, useNavigation } from "~utils";
 
 export const Landing = (): ReactNode => {
+    const setUserStore = useSetUserStore();
+    const navigation = useNavigation();
+
+    const navigateAndSetUserStore = async (user: User) => {
+        setUserStore(user);
+        OasisGuardStorageController.setUserStore(user);
+        navigation.push(Paths.HOME);
+    };
+
     const registerMutation = useMutation({
         mutationFn: async () => {
             const userId = formatHex(
@@ -54,9 +65,21 @@ export const Landing = (): ReactNode => {
             const publicAddress =
                 await OasisGuardFactoryController.genAccountAddress(publicKey);
 
-            console.log(publicAddress);
+            const user = {
+                credentialId: authResponse.credentialId,
+                publicKey,
+                publicAddress,
+                userId,
+            };
+            navigateAndSetUserStore(user);
         },
     });
+
+    useEffect(() => {
+        OasisGuardStorageController.getUserStore().then((user) => {
+            navigateAndSetUserStore(user);
+        });
+    }, []);
 
     return (
         <div className={css(styles.page)}>
