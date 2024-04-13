@@ -13,6 +13,7 @@ import {
 export class OasisGuardFactoryController {
     static async genCreateAccount(
         publicKey: [string, string],
+        userId: string,
     ): Promise<ContractReceipt> {
         const { privateKey: semaphoreIdentityPK } = new Identity();
         const accountFactoryInterface = new ethers.utils.Interface(
@@ -20,13 +21,14 @@ export class OasisGuardFactoryController {
         );
         const calldata = accountFactoryInterface.encodeFunctionData(
             "createAccount",
-            [publicKey, formatHex(semaphoreIdentityPK)],
+            [publicKey, formatHex(semaphoreIdentityPK), userId],
         );
 
         const accountCreationCalldata =
             await getGaslessProxyContract().makeProxyTx(
                 Address.FACTORY,
                 calldata,
+                10_000_000,
             );
 
         const tx = await SAPPHIRE_PROVIDER.sendTransaction(
@@ -42,5 +44,9 @@ export class OasisGuardFactoryController {
         publicKey: [string, string],
     ): Promise<string> {
         return await getFactoryContract().getAccountAddress(publicKey);
+    }
+
+    static async getPublicKey(userId: string): Promise<[string, string]> {
+        return await getFactoryContract().getPublicKey(userId);
     }
 }

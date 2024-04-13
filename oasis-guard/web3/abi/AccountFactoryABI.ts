@@ -30,6 +30,11 @@ export const AccountFactoryABI = [
                 name: "_privateKey",
                 type: "bytes32",
             },
+            {
+                internalType: "bytes8",
+                name: "_id",
+                type: "bytes8",
+            },
         ],
         name: "createAccount",
         outputs: [
@@ -64,6 +69,25 @@ export const AccountFactoryABI = [
     {
         inputs: [
             {
+                internalType: "bytes8",
+                name: "_id",
+                type: "bytes8",
+            },
+        ],
+        name: "getPublicKey",
+        outputs: [
+            {
+                internalType: "bytes32[2]",
+                name: "",
+                type: "bytes32[2]",
+            },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
                 internalType: "bytes32[2]",
                 name: "_publicKey",
                 type: "bytes32[2]",
@@ -78,6 +102,19 @@ export const AccountFactoryABI = [
             },
         ],
         stateMutability: "pure",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "id",
+        outputs: [
+            {
+                internalType: "bytes8",
+                name: "",
+                type: "bytes8",
+            },
+        ],
+        stateMutability: "view",
         type: "function",
     },
 ];

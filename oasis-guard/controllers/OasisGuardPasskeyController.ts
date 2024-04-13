@@ -1,76 +1,56 @@
 import { Buffer } from "buffer";
-import { BigNumber, ethers } from "ethers";
 
-import { authenticate, formatHex, register } from "~utils";
+import {
+    authenticate,
+    formatHex,
+    getCurrentDateReadable,
+    register,
+} from "~utils";
 
 export class OasisGuardPasskeyController {
+    /**
+     *
+     * @dev Get display name of the passkey
+     */
     static getDisplayName(): string {
-        const readableDate = this.getCurrentDateReadable();
+        const readableDate = getCurrentDateReadable();
         return "Wallet Created at " + readableDate;
     }
 
-    static getCurrentDateReadable(): string {
-        const currentDate = new Date();
-
-        const day =
-            currentDate.getDate() < 10
-                ? `0${currentDate.getDate()}`
-                : currentDate.getDate().toString();
-        const month = this.getMonthFromIndex(currentDate.getMonth());
-        const year = currentDate.getFullYear().toString();
-        return `${month} ${day}, ${year} - ${
-            currentDate.getHours().toString().length > 1
-                ? currentDate.getHours()
-                : "0" + currentDate.getHours().toString()
-        }:${
-            currentDate.getMinutes().toString().length > 1
-                ? currentDate.getMinutes()
-                : "0" + currentDate.getMinutes().toString()
-        }`;
-    }
-
-    static getMonthFromIndex(index: number) {
-        const indexToMonth: Record<number, string> = {
-            0: "Jan",
-            1: "Feb",
-            2: "Mar",
-            3: "Apr",
-            4: "May",
-            5: "Jun",
-            6: "Jul",
-            7: "Aug",
-            8: "Sep",
-            9: "Oct",
-            10: "Nov",
-            11: "Dec",
-        };
-        return indexToMonth[index];
-    }
-
-    // public static authenticate() {}
-
-    static async register() {
+    /**
+     * @dev Create new passkey
+     * @returns Registration response
+     */
+    static async register(id: string) {
         const CHALLENGE = "deadbeefdeafbeef";
-        const userId = ethers.utils.randomBytes(8).toString();
 
-        return await register(
-            OasisGuardPasskeyController.getCurrentDateReadable(),
-            userId,
-            CHALLENGE,
-        );
+        return await register(getCurrentDateReadable(), id, CHALLENGE);
     }
-
+    /**
+     * @dev Authenticate passkey
+     * @returns Authentication response
+     */
     static async auth() {
         const CHALLENGE = "deadbeefdeafbeef";
         return await authenticate([], CHALLENGE);
     }
 
+    /**
+     *
+     * @param base64 base64 encoded string
+     * @returns hex encoded string
+     */
     static base64ToHex(base64: string): string {
         return Buffer.from(base64, "base64").toString("hex");
     }
 
+    /**
+     *
+     * @param base64url base64url encoded string
+     * @returns utf-8 string
+     */
     static base64UrlToUtf8(base64Url: string): string {
-        return Buffer.from(base64Url, "base64").toString("hex");
+        return Buffer.from(base64Url, "base64").toString();
     }
 
     static async getPublicKeyFromPublicKeyCose(

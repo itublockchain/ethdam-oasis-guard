@@ -4,3 +4,4 @@ export * from "./dimensions";
 export * from "./clsnm";
 export * from "./webauthn";
 export * from "./formatHex";
+export * from "./date";

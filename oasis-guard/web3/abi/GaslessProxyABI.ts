@@ -21,6 +21,11 @@ export const GaslessProxyABI = [
                 name: "innercall",
                 type: "bytes",
             },
+            {
+                internalType: "uint64",
+                name: "gasLimit",
+                type: "uint64",
+            },
         ],
         name: "makeProxyTx",
         outputs: [

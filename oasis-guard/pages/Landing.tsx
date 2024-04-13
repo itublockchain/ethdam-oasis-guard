@@ -2,19 +2,24 @@ import { useMutation } from "@tanstack/react-query";
 import { css, StyleSheet } from "aphrodite";
 import LandingImage from "data-base64:~assets/landing.png";
 import LogoWithSubtext from "data-base64:~assets/logoWithSubtext.png";
-import type { ReactNode } from "react";
+import { ethers } from "ethers";
+import { useId, type ReactNode } from "react";
 
 import {
     OasisGuardFactoryController,
     OasisGuardPasskeyController,
 } from "~controllers";
 import { Button, Gap } from "~ui";
+import { formatHex } from "~utils";
 
 export const Landing = (): ReactNode => {
     const registerMutation = useMutation({
         mutationFn: async () => {
+            const userId = formatHex(
+                Buffer.from(ethers.utils.randomBytes(8)).toString("hex"),
+            );
             const registrationEncoded =
-                await OasisGuardPasskeyController.register();
+                await OasisGuardPasskeyController.register(userId);
             const publicKeyBase64Url = registrationEncoded.credential.publicKey;
             const publicKey =
                 await OasisGuardPasskeyController.getPublicKeyFromPublicKeyCose(
@@ -24,9 +29,10 @@ export const Landing = (): ReactNode => {
                 OasisGuardPasskeyController.getXandYFromPublicKey(publicKey);
 
             const accountReceipt =
-                await OasisGuardFactoryController.genCreateAccount(xAndY);
-
-            console.log("AccountReceipt", accountReceipt);
+                await OasisGuardFactoryController.genCreateAccount(
+                    xAndY,
+                    userId,
+                );
 
             if (accountReceipt != null) {
                 console.log(
@@ -39,7 +45,16 @@ export const Landing = (): ReactNode => {
     const authMutation = useMutation({
         mutationFn: async () => {
             const authResponse = await OasisGuardPasskeyController.auth();
-            authResponse.authenticatorData;
+            const userId = OasisGuardPasskeyController.base64UrlToUtf8(
+                authResponse.userHandle,
+            );
+
+            const publicKey =
+                await OasisGuardFactoryController.getPublicKey(userId);
+            const publicAddress =
+                await OasisGuardFactoryController.genAccountAddress(publicKey);
+
+            console.log(publicAddress);
         },
     });
 
@@ -58,8 +73,7 @@ export const Landing = (): ReactNode => {
                 <Gap size={12} />
                 <Button
                     onClick={async () => {
-                        const authResponse =
-                            await OasisGuardPasskeyController.auth();
+                        await authMutation.mutateAsync();
                     }}
                 >
                     Sign In With Passkeys
