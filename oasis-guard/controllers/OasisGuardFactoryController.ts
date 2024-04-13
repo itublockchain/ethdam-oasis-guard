@@ -1,13 +1,18 @@
 import { Identity } from "@semaphore-protocol/identity";
 import type { ContractReceipt } from "ethers";
 
-import { FactoryContract } from "~web3";
+import { formatHex } from "~utils";
+import { getFactoryContract } from "~web3";
 
 export class OasisGuardFactoryController {
     static async genCreateAccount(
         publicKey: [string, string],
     ): Promise<ContractReceipt> {
-        const tx = await FactoryContract.createAccount(publicKey);
+        const { privateKey: semaphoreIdentityPK } = new Identity();
+        const tx = await getFactoryContract(semaphoreIdentityPK).createAccount(
+            publicKey,
+            formatHex(semaphoreIdentityPK),
+        );
         const receipt: ContractReceipt = await tx.wait();
         return receipt;
     }
@@ -15,6 +20,6 @@ export class OasisGuardFactoryController {
     static async genAccountAddress(
         publicKey: [string, string],
     ): Promise<string> {
-        return await FactoryContract.getAccountAddress(publicKey);
+        return await getFactoryContract().getAccountAddress(publicKey);
     }
 }

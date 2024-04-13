@@ -38,13 +38,7 @@ export const Landing = (): ReactNode => {
 
     return (
         <div className={css(styles.page)}>
-            <img
-                src={LandingImage}
-                style={{
-                    animationTimingFunction: "linear",
-                }}
-                className={css(styles.image)}
-            />
+            <img src={LandingImage} className={css(styles.image)} />
             <div className={css(styles.actions)}>
                 <img src={LogoWithSubtext} className={css(styles.logo)} />
                 <Button onClick={registerMutation.mutateAsync} color="black">
@@ -112,6 +106,7 @@ const styles = StyleSheet.create({
             },
         },
         animationIterationCount: "infinite",
-        animationDuration: "15s",
+        animationDuration: "10s",
+        animationTimingFunction: "linear",
     },
 });
