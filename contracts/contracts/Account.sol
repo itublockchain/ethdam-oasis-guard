@@ -63,6 +63,44 @@ contract Account is IR1Validator {
         nameExists[_name] = true;
     }
 
+    function addPasswords(
+        address _validator,
+        bytes32 _signedHash,
+        bytes memory _signature,
+        bytes32[] memory _passwords,
+        string[] memory _names
+    ) public {
+        require(
+            IR1Validator(_validator).validateSignature(
+                _signedHash,
+                _signature,
+                publicKey
+            ),
+            "Account: Cannot validate signature"
+        );
+        require(
+            _passwords.length == _names.length,
+            "Account: Passwords and names length mismatch"
+        );
+
+        for (uint i = 0; i < _passwords.length; i++) {
+            require(
+                nameToPassword[_names[i]] == bytes32(0),
+                "Account: Password already exists"
+            );
+            require(
+                bytes(_names[i]).length > 0,
+                "Account: Name cannot be empty"
+            );
+
+            passwords.push(_passwords[i]);
+            nameToPassword[_names[i]] = _passwords[i];
+            names.push(_names[i]);
+            passwordExists[_passwords[i]] = true;
+            nameExists[_names[i]] = true;
+        }
+    }
+
     function getPassword(
         address _validator,
         bytes32 _signedHash,

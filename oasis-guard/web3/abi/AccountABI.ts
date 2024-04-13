@@ -94,6 +94,39 @@ export const AccountABI = [
                 type: "bytes",
             },
             {
+                internalType: "bytes32[]",
+                name: "_passwords",
+                type: "bytes32[]",
+            },
+            {
+                internalType: "string[]",
+                name: "_names",
+                type: "string[]",
+            },
+        ],
+        name: "addPasswords",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "address",
+                name: "_validator",
+                type: "address",
+            },
+            {
+                internalType: "bytes32",
+                name: "_signedHash",
+                type: "bytes32",
+            },
+            {
+                internalType: "bytes",
+                name: "_signature",
+                type: "bytes",
+            },
+            {
                 internalType: "string",
                 name: "_invitationCode",
                 type: "string",
