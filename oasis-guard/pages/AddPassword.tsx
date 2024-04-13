@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { css, StyleSheet } from "aphrodite";
+import { Eye, EyeSlash } from "iconsax-react";
 import { useMemo, useState, type ReactNode } from "react";
 
 import { Navbar } from "~components";
@@ -15,6 +16,7 @@ export const AddPassword = (): ReactNode => {
     const [password, setPassword] = useState("");
     const { data: passwordNames } = usePasswordNames();
     const [startedWriting, setStartedWriting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const isNameTaken = useMemo(() => {
         return passwordNames.includes(website);
@@ -66,19 +68,33 @@ export const AddPassword = (): ReactNode => {
                         label="Website"
                     />
                     <Gap size={16} />
-                    <Input
-                        warning={
-                            !isPasswordSecure && startedWriting
-                                ? "Password must be at least 8 characters"
-                                : undefined
-                        }
-                        value={password}
-                        onChange={(e) => {
-                            setStartedWriting(true);
-                            setPassword(e.target.value);
-                        }}
-                        label="Password"
-                    />
+                    <div className={css(styles.passwordInput)}>
+                        <div
+                            onClick={() => setShowPassword(!showPassword)}
+                            className={css(styles.eye)}
+                        >
+                            {showPassword ? (
+                                <EyeSlash size={20} color="white" />
+                            ) : (
+                                <Eye size={20} color="white" />
+                            )}
+                        </div>
+                        <Input
+                            type={showPassword ? "text" : "password"}
+                            warning={
+                                !isPasswordSecure && startedWriting
+                                    ? "Password must be at least 8 characters"
+                                    : undefined
+                            }
+                            value={password}
+                            onChange={(e) => {
+                                setStartedWriting(true);
+                                setPassword(e.target.value);
+                            }}
+                            label="Password"
+                        />
+                    </div>
+
                     <Button
                         onClick={() => {
                             setPassword(
@@ -128,5 +144,15 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         marginTop: "auto",
+    },
+    passwordInput: {
+        position: "relative",
+    },
+    eye: {
+        position: "absolute",
+        right: 12,
+        top: 38,
+        zIndex: 1,
+        cursor: "pointer",
     },
 });
