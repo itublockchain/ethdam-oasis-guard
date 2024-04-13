@@ -17,8 +17,7 @@ export const usePasswordNames = () => {
                 const names = await accountContract.getNames();
                 return names;
             } catch (err) {
-                console.log(err);
-
+                console.warn(err);
                 return [];
             }
         },

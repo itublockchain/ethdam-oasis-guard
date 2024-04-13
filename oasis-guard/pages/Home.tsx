@@ -8,6 +8,7 @@ import { Paths, useNavigation, usePasswordNames } from "~utils";
 
 export const Home = (): ReactNode => {
     const navigation = useNavigation();
+    const { data } = usePasswordNames();
 
     return (
         <div className={css(styles.page)}>
