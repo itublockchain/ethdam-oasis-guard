@@ -1,6 +1,6 @@
 import { ethers, Wallet } from "ethers";
 
-import { AccountFactoryABI, GaslessProxyABI } from "~web3/abi";
+import { AccountABI, AccountFactoryABI, GaslessProxyABI } from "~web3/abi";
 import { Address } from "~web3/addresses";
 import { SAPPHIRE_PROVIDER } from "~web3/rpc";
 
@@ -28,4 +28,8 @@ export const getGaslessProxyContract = (privateKey?: string) => {
         GaslessProxyABI,
         signerOrProvider,
     );
+};
+
+export const getAccountContract = (address: string) => {
+    return new ethers.Contract(address, AccountABI, SAPPHIRE_PROVIDER);
 };

@@ -5,3 +5,5 @@ export * from "./clsnm";
 export * from "./webauthn";
 export * from "./formatHex";
 export * from "./date";
+export * from "./query";
+export * from "./query/index";
