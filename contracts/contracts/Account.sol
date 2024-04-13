@@ -12,23 +12,15 @@ contract Account is IR1Validator {
     // Array for passwords (could be optimized further if order is not necessary)
     bytes32[] private passwords;
 
-    // Constant for a account id
-    bytes8 public id;
-
     // Mapping for the names to passwords
     mapping(string => bytes32) private nameToPassword;
-
-    // Mapping for the ids to public keys
-    mapping(bytes8 => bytes32[2]) private idToPublicKey;
 
     // Mapping to check existence of a password to optimize deletion
     mapping(bytes32 => bool) private passwordExists;
 
-    constructor(bytes32[2] memory _publicKey, bytes32 _privateKey, bytes8 _id) {
+    constructor(bytes32[2] memory _publicKey, bytes32 _privateKey) {
         publicKey = _publicKey;
         privateKey = _privateKey;
-        id = _id;
-        idToPublicKey[_id] = _publicKey;
     }
 
     function addPassword(
@@ -128,10 +120,6 @@ contract Account is IR1Validator {
             "Account: Cannot validate signature"
         );
         return privateKey;
-    }
-
-    function getPublicKey(bytes8 _id) public view returns (bytes32[2] memory) {
-        return idToPublicKey[_id];
     }
 
     function supportsInterface(

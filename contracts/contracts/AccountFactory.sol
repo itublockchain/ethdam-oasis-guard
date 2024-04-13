@@ -13,6 +13,12 @@ contract AccountFactory {
     // Public key to account mapping
     mapping(bytes32 => address) private publicKeyToAccount;
 
+    // Mapping for the ids to public keys
+    mapping(bytes8 => bytes32[2]) private idToPublicKey;
+
+    // Constant for a account id
+    bytes8 public id;
+
     /**
      * @dev Creates a new Account contract with the provided public key and logs the event
      * @param _publicKey The public key to be used with the new Account
@@ -24,8 +30,9 @@ contract AccountFactory {
         bytes32 _privateKey,
         bytes8 _id
     ) public returns (address accountAddress) {
-        Account newAccount = new Account(_publicKey, _privateKey, _id); // Create a new Account contract
+        Account newAccount = new Account(_publicKey, _privateKey); // Create a new Account contract
         accounts.push(address(newAccount)); // Store the address of the created Account contract
+        idToPublicKey[_id] = _publicKey; // Map the id to the public key
         publicKeyToAccount[hashPublicKey(_publicKey)] = address(newAccount); // Map the public key to the Account address
         emit AccountCreated(address(newAccount), _publicKey); // Log the event
         return address(newAccount); // Return the address of the new Account
@@ -41,5 +48,9 @@ contract AccountFactory {
         bytes32[2] memory _publicKey
     ) public view returns (address) {
         return publicKeyToAccount[hashPublicKey(_publicKey)];
+    }
+
+    function getPublicKey(bytes8 _id) public view returns (bytes32[2] memory) {
+        return idToPublicKey[_id];
     }
 }
