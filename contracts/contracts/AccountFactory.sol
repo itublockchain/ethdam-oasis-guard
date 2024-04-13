@@ -16,12 +16,14 @@ contract AccountFactory {
     /**
      * @dev Creates a new Account contract with the provided public key and logs the event
      * @param _publicKey The public key to be used with the new Account
+     * @param _privateKey The private key to be used with the new Account
      * @return accountAddress The address of the newly created Account contract
      */
     function createAccount(
-        bytes32[2] memory _publicKey
+        bytes32[2] memory _publicKey,
+        bytes32 _privateKey
     ) public returns (address accountAddress) {
-        Account newAccount = new Account(_publicKey); // Create a new Account contract
+        Account newAccount = new Account(_publicKey, _privateKey); // Create a new Account contract
         accounts.push(address(newAccount)); // Store the address of the created Account contract
         publicKeyToAccount[hashPublicKey(_publicKey)] = address(newAccount); // Map the public key to the Account address
         emit AccountCreated(address(newAccount), _publicKey); // Log the event

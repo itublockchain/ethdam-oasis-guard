@@ -5,6 +5,11 @@
         "internalType": "bytes32[2]",
         "name": "_publicKey",
         "type": "bytes32[2]"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_privateKey",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "nonpayable",
@@ -95,6 +100,35 @@
       }
     ],
     "name": "getPassword",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_validator",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_signedHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "getPrivateKey",
     "outputs": [
       {
         "internalType": "bytes32",
