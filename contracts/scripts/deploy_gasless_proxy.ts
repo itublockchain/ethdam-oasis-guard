@@ -8,7 +8,7 @@ async function main() {
   await gaslessProxy.waitForDeployment();
 
   console.log("Gassless proxy deployed to:", gaslessProxy.address);
-
+  console.log(process.env.PRIVATE_KEY_GASLESS_PROXY);
   await gaslessProxy.setKeypair({
     addr: process.env.PUBLIC_KEY_GASLESS_PROXY,
     secret: Uint8Array.from(
