@@ -1,3 +1,3 @@
 export const Address = {
-    FACTORY: "0xC16d9b4AD3c3B45fAb5d8F79ba986069E4403c58",
+    FACTORY: "0x9a15222BBE0Ef08432fed68B86c919088fc0BbDF",
 };

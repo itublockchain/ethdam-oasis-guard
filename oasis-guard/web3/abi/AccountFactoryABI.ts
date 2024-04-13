@@ -25,6 +25,11 @@ export const AccountFactoryABI = [
                 name: "_publicKey",
                 type: "bytes32[2]",
             },
+            {
+                internalType: "bytes32",
+                name: "_privateKey",
+                type: "bytes32",
+            },
         ],
         name: "createAccount",
         outputs: [

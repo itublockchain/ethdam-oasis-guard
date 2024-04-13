@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import { BigNumber, ethers } from "ethers";
 
-import { authenticate, register } from "~utils";
+import { authenticate, formatHex, register } from "~utils";
 
 export class OasisGuardPasskeyController {
     static getDisplayName(): string {
@@ -94,7 +94,7 @@ export class OasisGuardPasskeyController {
 
         const x = sliced.slice(0, 64);
         const y = sliced.slice(64, 128);
-        return [x, y];
+        return [formatHex(x), formatHex(y)];
     }
 
     static base64toBase64Url(base64: string): string {
