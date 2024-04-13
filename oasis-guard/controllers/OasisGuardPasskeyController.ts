@@ -8,6 +8,7 @@ import {
 } from "~utils";
 
 export class OasisGuardPasskeyController {
+    static CHALLENGE = "deadbeefdeadbeef";
     /**
      *
      * @dev Get display name of the passkey
@@ -22,17 +23,14 @@ export class OasisGuardPasskeyController {
      * @returns Registration response
      */
     static async register(id: string) {
-        const CHALLENGE = "deadbeefdeafbeef";
-
-        return await register(getCurrentDateReadable(), id, CHALLENGE);
+        return await register(getCurrentDateReadable(), id, this.CHALLENGE);
     }
     /**
      * @dev Authenticate passkey
      * @returns Authentication response
      */
-    static async auth() {
-        const CHALLENGE = "deadbeefdeafbeef";
-        return await authenticate([], CHALLENGE);
+    static async auth(credentialId: string[] = []) {
+        return await authenticate(credentialId, this.CHALLENGE);
     }
 
     /**
@@ -103,5 +101,37 @@ export class OasisGuardPasskeyController {
 
     static bufferToHex(buffer: Buffer): string {
         return buffer.toString("hex");
+    }
+
+    static base64UrlToBase64(base64url: string | Buffer): string {
+        base64url = base64url.toString();
+        return this.padString(base64url).replace(/\-/g, "+").replace(/_/g, "/");
+    }
+
+    static bufferFromBase64url(base64url: string): Buffer {
+        return Buffer.from(this.base64UrlToBase64(base64url), "base64");
+    }
+
+    static padString(input: string): string {
+        const segmentLength = 4;
+        const stringLength = input.length;
+        const diff = stringLength % segmentLength;
+
+        if (!diff) {
+            return input;
+        }
+
+        let position = stringLength;
+        let padLength = segmentLength - diff;
+        const paddedStringLength = stringLength + padLength;
+        const buffer = Buffer.alloc(paddedStringLength);
+
+        buffer.write(input);
+
+        while (padLength--) {
+            buffer.write("=", position++);
+        }
+
+        return buffer.toString();
     }
 }

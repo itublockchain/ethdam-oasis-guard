@@ -15,6 +15,7 @@ export const Input = ({
     containerStyleOverrides = [],
     styleOverrides = [],
     label,
+    ...props
 }: Props): ReactNode => {
     return (
         <div
@@ -26,7 +27,10 @@ export const Input = ({
                     {label}
                 </Typography>
             )}
-            <input className={css(styles.input, ...styleOverrides)} />
+            <input
+                {...props}
+                className={css(styles.input, ...styleOverrides)}
+            />
         </div>
     );
 };
