@@ -51,9 +51,11 @@ export class OasisGuardPasskeyController {
 
     static async register() {
         const CHALLENGE = "deadbeefdeafbeef";
+        const userId = ethers.utils.randomBytes(8).toString();
+
         return await register(
             OasisGuardPasskeyController.getCurrentDateReadable(),
-            "OasisGuard",
+            userId,
             CHALLENGE,
         );
     }
