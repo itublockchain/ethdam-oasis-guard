@@ -101,4 +101,14 @@ contract Account is IR1Validator {
         delete nameToPassword[_name];
         passwordExists[toDelete] = false;
     }
+
+    function supportsInterface(
+        bytes4 interfaceId
+    ) external view override returns (bool) {}
+
+    function validateSignature(
+        bytes32 signedHash,
+        bytes calldata signature,
+        bytes32[2] calldata pubKey
+    ) external view override returns (bool valid) {}
 }

@@ -5,7 +5,7 @@ import "./Account.sol";
 
 contract AccountFactory {
     // Event to log the creation of a new Account contract
-    event AccountCreated(address indexed accountAddress);
+    event AccountCreated(address indexed accountAddress, bytes32[2] publicKey);
 
     // Array to store addresses of all the created Account contracts
     address[] private accounts;
@@ -20,7 +20,7 @@ contract AccountFactory {
     ) public returns (address accountAddress) {
         Account newAccount = new Account(_publicKey); // Create a new Account contract
         accounts.push(address(newAccount)); // Store the address of the created Account contract
-        emit AccountCreated(address(newAccount)); // Log the event
+        emit AccountCreated(address(newAccount), _publicKey); // Log the event
         return address(newAccount); // Return the address of the new Account
     }
 }

@@ -4,23 +4,32 @@ import {Base64} from "./helpers/Base64.sol";
 import {IR1Validator, IERC165} from "./interfaces/IValidator.sol";
 import {VerifierCaller} from "./helpers/VerifierCaller.sol";
 
-contract PasskeyVerifier is VerifierCaller {
+contract PasskeyVerifier is VerifierCaller, IR1Validator {
     // Oasis Sapphire Testnet P256Verifier Contract Address
     address constant P256_VERIFIER = 0x70B46Dc19E7372e67c50E9076F2BE8291FDFB416;
     // maximum value for 's' in a secp256r1 signature
     bytes32 constant lowSmax =
         0x7fffffff800000007fffffffffffffffde737d56d38bcf4279dce5617e3192a8;
     string constant ClIENT_DATA_PREFIX = '{"type":"webauthn.get","challenge":"';
-    bytes constant AUTHENTICATOR_DATA = hex"000000"; // FIXME: this is a placeholder
     // user presence and user verification flags
     bytes1 constant AUTH_DATA_MASK = 0x05;
 
+    /// @inheritdoc IR1Validator
     function validateSignature(
         bytes32 challenge,
         bytes calldata signature,
         bytes32[2] calldata pubKey
     ) external view returns (bool valid) {
         valid = _validateFatSignature(challenge, signature, pubKey);
+    }
+
+    /// @inheritdoc IERC165
+    function supportsInterface(
+        bytes4 interfaceId
+    ) external pure override returns (bool) {
+        return
+            interfaceId == type(IR1Validator).interfaceId ||
+            interfaceId == type(IERC165).interfaceId;
     }
 
     function _validateFatSignature(
