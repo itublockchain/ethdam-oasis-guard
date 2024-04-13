@@ -30,7 +30,8 @@ contract GaslessProxy {
     function makeProxyTx(
         address innercallAddr,
         bytes memory innercall,
-        uint64 gasLimit
+        uint64 gasLimit,
+        uint64 _nonce
     ) external view returns (bytes memory output) {
         bytes memory data = abi.encode(innercallAddr, innercall);
 
@@ -40,7 +41,7 @@ contract GaslessProxy {
                 kp.addr,
                 kp.secret,
                 EIP155Signer.EthTx({
-                    nonce: kp.nonce,
+                    nonce: _nonce,
                     gasPrice: 100_000_000_000,
                     gasLimit: gasLimit,
                     to: address(this),
@@ -65,6 +66,5 @@ contract GaslessProxy {
                 revert(add(outData, 32), mload(outData))
             }
         }
-        kp.nonce += 1;
     }
 }

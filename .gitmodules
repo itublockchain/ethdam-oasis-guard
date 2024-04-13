@@ -1,3 +1,6 @@
 [submodule "p256-verifier"]
 	path = p256-verifier
 	url = https://github.com/daimo-eth/p256-verifier
+[submodule "semaphore"]
+	path = semaphore
+	url = https://github.com/semaphore-protocol/semaphore.git

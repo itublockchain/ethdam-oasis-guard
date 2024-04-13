@@ -1,4 +1,4 @@
-# Contracts on sapphire testnet
+# Contracts on sapphire testnet all verified with sourcify
 
 ```
 WebAuthn.sol: 0x21c12A8A12240417ECcFCe47645152EEbaaB8035
@@ -7,4 +7,6 @@ P256Verifier.sol: 0x70B46Dc19E7372e67c50E9076F2BE8291FDFB416
 Verifier.sol: 0x968989eDFAB00952B5F38130Fe6178f82d54590e
 AccountFactory.sol: 0x232f7a267817794301A4ac585799127f1b997BD8
 GaslessProxy.sol: 0x7DB90F79acAB311271E217b4712082d250F8e8d7
+SemaphoreVerifier.sol: 0xF1cfAB193bbA41541601da794d0e850b0A09b92D
+Semaphore.sol: 0x9245483dB42fFa2087b0577bF247a0cbaaef2E84
 ```

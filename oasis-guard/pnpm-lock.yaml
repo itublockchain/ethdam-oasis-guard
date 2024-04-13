@@ -8,6 +8,9 @@ dependencies:
   '@bandada/api-sdk':
     specifier: ^2.2.6
     version: 2.2.6
+  '@semaphore-protocol/contracts':
+    specifier: 4.0.0-beta.7
+    version: 4.0.0-beta.7
   '@semaphore-protocol/identity':
     specifier: 4.0.0-beta.7
     version: 4.0.0-beta.7
@@ -2610,6 +2613,12 @@ packages:
       config-chain: 1.1.13
     dev: false
 
+  /@semaphore-protocol/contracts@4.0.0-beta.7:
+    resolution: {integrity: sha512-aaNOWJODm9/HoN/u0wSUFu1wixwXIC94IqcQ8ZJSgbv8mX2B4qraNG0JDBEUvjSP/P5sGE3xRHU2lyhGUHkKGQ==}
+    dependencies:
+      '@zk-kit/imt.sol': 2.0.0-beta.8
+    dev: false
+
   /@semaphore-protocol/identity@4.0.0-beta.7:
     resolution: {integrity: sha512-e7br6cz9stuzw9Z0NoC3hTQ32Fgh5WT+zx4INEuvpwLoDTnsEhuCG8xoXVSG3HkymbpbVWABAcQb/7K8fmivnQ==}
     dependencies:
@@ -3191,6 +3200,12 @@ packages:
       '@zk-kit/baby-jubjub': 0.3.0
       '@zk-kit/utils': 0.8.1
       buffer: 6.0.3
+    dev: false
+
+  /@zk-kit/imt.sol@2.0.0-beta.8:
+    resolution: {integrity: sha512-tXF0ypJOi4hNHTTYbp9UUweOWpgFWHahNpZTClJ0SMccy5saMsK1p9SD4HjC30bbWV6Ow4mjLkd5om7Rtul9qg==}
+    dependencies:
+      poseidon-solidity: 0.0.5
     dev: false
 
   /@zk-kit/utils@0.6.0:
@@ -5478,6 +5493,10 @@ packages:
 
   /poseidon-lite@0.2.0:
     resolution: {integrity: sha512-vivDZnGmz8W4G/GzVA72PXkfYStjilu83rjjUfpL4PueKcC8nfX6hCPh2XhoC5FBgC6y0TA3YuUeUo5YCcNoig==}
+    dev: false
+
+  /poseidon-solidity@0.0.5:
+    resolution: {integrity: sha512-NzrvSwHzvZgT4hvg2GyGqeR+UOU/eLSEt4wAoXEua+VaR7NTKKwx1X9bPlh1VMBEVEno+IWvkRBbidFGzTeAqQ==}
     dev: false
 
   /postcss-load-config@4.0.2:
