@@ -4,7 +4,7 @@ import {Base64} from "./helpers/Base64.sol";
 import {IR1Validator, IERC165} from "./interfaces/IValidator.sol";
 import {VerifierCaller} from "./helpers/VerifierCaller.sol";
 
-contract PasskeyVerifier is VerifierCaller, IR1Validator {
+contract ConstantVerifier is VerifierCaller, IR1Validator {
     // Oasis Sapphire Testnet P256Verifier Contract Address
     address constant P256_VERIFIER = 0x70B46Dc19E7372e67c50E9076F2BE8291FDFB416;
     // maximum value for 's' in a secp256r1 signature
