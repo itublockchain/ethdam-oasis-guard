@@ -14,6 +14,7 @@
         "@semaphore-protocol/identity": "4.0.0-beta.7",
         "cbor": "^9.0.2",
         "ethers": "5.7.2",
+        "iconsax-react": "^0.0.8",
         "plasmo": "0.85.2",
         "react": "18.2.0",
         "react-dom": "18.2.0"

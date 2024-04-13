@@ -55,7 +55,6 @@ export const Landing = (): ReactNode => {
                     onClick={async () => {
                         const authResponse =
                             await OasisGuardPasskeyController.auth();
-                        console.log(authResponse);
                     }}
                 >
                     Sign In With Passkeys
@@ -74,6 +73,8 @@ const styles = StyleSheet.create({
         paddingRight: 64,
     },
     logo: {
+        pointerEvents: "none",
+        userSelect: "none",
         width: 185,
         marginBottom: 50,
     },
