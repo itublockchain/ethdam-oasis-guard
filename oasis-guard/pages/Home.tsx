@@ -4,16 +4,21 @@ import type { ReactNode } from "react";
 
 import { Navbar } from "~components";
 import { Button } from "~ui";
-import { usePasswordNames } from "~utils";
+import { Paths, useNavigation, usePasswordNames } from "~utils";
 
 export const Home = (): ReactNode => {
-    const { data: passwordNames } = usePasswordNames();
+    const navigation = useNavigation();
 
     return (
         <div className={css(styles.page)}>
             <Navbar />
             <div className={css(styles.floating)}>
-                <Button styleOverrides={[styles.circle]}>
+                <Button
+                    onClick={() => {
+                        navigation.push(Paths.ADD_PASSWORD);
+                    }}
+                    styleOverrides={[styles.circle]}
+                >
                     <Add />
                 </Button>
             </div>

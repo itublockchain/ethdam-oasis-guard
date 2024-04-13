@@ -2,7 +2,7 @@ import { css, StyleSheet } from "aphrodite";
 
 import { AppWrapper } from "~components";
 import { useInitialStyling } from "~hooks";
-import { Home, Landing, Settings } from "~pages";
+import { AddPassword, Home, Landing, Settings } from "~pages";
 import {
     Dimensions,
     NavigationProvider,
@@ -28,6 +28,9 @@ function App() {
                 </NavigationScreen>
                 <NavigationScreen path={Paths.SETTINGS}>
                     <Settings />
+                </NavigationScreen>
+                <NavigationScreen path={Paths.ADD_PASSWORD}>
+                    <AddPassword />
                 </NavigationScreen>
             </NavigationProvider>
         </AppWrapper>
