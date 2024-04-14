@@ -8,7 +8,7 @@ export default function Home() {
     },
     {
       q: "How does OasisGuard work?",
-      a: "OasisGuard uses a Oasis Saphire to store confidential information on-chain.",
+      a: "OasisGuard uses a Oasis Sapphire to store confidential information on-chain.",
     },
     {
       q: "Can I hold my private keys in OasisGuard?",
