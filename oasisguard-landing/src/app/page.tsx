@@ -1,3 +1,4 @@
+import heart from "../../public/Pixel_heart_red.svg";
 export default function Home() {
   const faq = [
     {
@@ -130,6 +131,14 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <div className="justify-center items-center">
+        <footer className="w-full h-20 flex flex-row space-x-2 justify-center items-center border-t">
+          <span className="text-gray-500">Built with</span>
+          <img src="/heart.svg"></img>
+          <span className="text-gray-500">by</span>
+          <a href="https://twitter.com/ITUblockchain">ITU Blockchain</a>
+        </footer>
+      </div>
     </>
   );
 }
