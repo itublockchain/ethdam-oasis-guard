@@ -115,10 +115,11 @@ export class OasisGuardPasswordController {
     }
 
     static formatPassword = (password: string): string => {
-        const formattedPassword =
-            password.length === 66 && password.startsWith("0x")
-                ? password
-                : ethers.utils.formatBytes32String(password);
-        return formattedPassword;
+        return password;
+        // const formattedPassword =
+        //     password.length === 66 && password.startsWith("0x")
+        //         ? password
+        //         : ethers.utils.formatBytes32String(password);
+        // return formattedPassword;
     };
 }

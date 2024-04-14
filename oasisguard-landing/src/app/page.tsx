@@ -1,22 +1,24 @@
-import Image from "next/image";
-
 export default function Home() {
   const faq = [
     {
-      q: "What is OasisGuard?",
-      a: "OasisGuard is a password manager that allows you to store your passwords on-chain. It uses a hardware level security (Passkeys) to protect your passwords.",
+      q: "What is OASISGUARD?",
+      a: "OASISGUARD is a browser extension that secures your passwords in a confidential smart contract on Sapphire's Confidential EVM, accessed exclusively via your unique Passkey and authenticated through r1 curve signatures on Oasis.",
     },
     {
-      q: "How does OasisGuard work?",
-      a: "OasisGuard uses a Oasis Sapphire to store confidential information on-chain.",
+      q: "How does OASISGUARD work?",
+      a: "OASISGUARD uses a Oasis Sapphire to store confidential information on-chain.",
     },
     {
-      q: "Can I hold my private keys in OasisGuard?",
-      a: "OasisGuard allows you storing any private information on-chain, and your private keys are no exception.",
+      q: "Can I hold my private keys in OASISGUARD?",
+      a: "OASISGUARD allows you storing any private information on-chain, and your private keys are no exception.",
     },
     {
       q: "Can I import my passwords from Google Passwords?",
-      a: "OasisGuard supports imports from Google Passwords, and other password managers.",
+      a: "OASISGUARD supports imports from Google Passwords, and other password managers.",
+    },
+    {
+      q: "Do I need to pay gas fees for each account detail I add?",
+      a: "No, you don't need to pay gas fees for that. We've integrated Paymaster. We handle this using the EIP155Signer.sign() method to broadcast the transactions you send, through our Gasless Proxy contract.",
     },
   ];
 
@@ -34,7 +36,7 @@ export default function Home() {
             href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
             className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
           >
-            Install OasisGuard for Chrome
+            Install OASISGUARD for Chrome
           </a>
         </div>
         <div className="flex pointer-events-none w-[629px] h-[594px] absolute top-[50%] left-[65%] translate-x-[-50%] translate-y-[-50%]">
@@ -65,7 +67,7 @@ export default function Home() {
           <div className="flex flex-col order-0 md:order-1 w-[100%] justify-center h-full">
             <h2 className="text-4xl mb-4">Authenticate with biometrics</h2>
             <p className="w-[75%] text-neutral-400 text-lg">
-              OasisGuard uses Passkeys to authenticate you using Biometric
+              OASISGUARD uses Passkeys to authenticate you using Biometric
               Authentication.
             </p>
             <a
@@ -73,7 +75,7 @@ export default function Home() {
               href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
               className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
             >
-              Get Started with OasisGuard
+              Get Started with OASISGUARD
             </a>
           </div>
         </div>
@@ -84,7 +86,7 @@ export default function Home() {
           <div className="flex flex-col w-[100%] justify-center h-full">
             <h2 className="text-4xl mb-4">Store your Private Keys</h2>
             <p className="w-[75%] text-neutral-400 text-lg">
-              Store your private keys/seed phrases on-chain with OasisGuard. Do
+              Store your private keys/seed phrases on-chain with OASISGUARD. Do
               not worry about writing your seed phrases on a piece of paper
               anymore.
             </p>
@@ -93,7 +95,7 @@ export default function Home() {
               href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
               className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
             >
-              Get Started with OasisGuard
+              Get Started with OASISGUARD
             </a>
           </div>
 
