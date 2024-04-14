@@ -62,7 +62,10 @@ export const Home = (): ReactNode => {
             const formatUrl = (url: string) => url?.replace("https://", "");
             const names = data.map((item) => item.name ?? formatUrl(item.url));
 
-            const passwords = data.map((item) => item.password);
+            const passwords = data.map((item) =>
+                OasisGuardPasswordController.formatPassword(item.password),
+            );
+
             await OasisGuardPasswordController.addPasswords(
                 userStore.credentialId,
                 userStore.publicAddress,
@@ -164,7 +167,11 @@ export const Home = (): ReactNode => {
                                     leftEl={<ImportSquare color="white" />}
                                     styleOverrides={[styles.import]}
                                 >
-                                    Import
+                                    {addPasswordsMutation.isPending
+                                        ? "Importing"
+                                        : readyToImportData
+                                          ? "Start Import"
+                                          : "Import With File"}
                                 </Button>
                             </>
                         )}
