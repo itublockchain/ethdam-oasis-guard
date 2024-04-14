@@ -3,7 +3,7 @@ export default function Home() {
   const faq = [
     {
       q: "What is OASISGUARD?",
-      a: "OASISGUARD is a browser extension that secures your passwords in a confidential smart contract on Sapphire's Confidential EVM, accessed exclusively via your unique Passkey and authenticated through r1 curve signatures on Oasis.",
+      a: "OASISGUARD is a browser extension that secures your passwords in a confidential smart contract on Sapphire's Confidential EVM, accessed exclusively via your unique Passkeys (Webauthn) and authenticated through r1 curve signatures on Oasis.",
     },
     {
       q: "How does OASISGUARD work?",
@@ -23,6 +23,9 @@ export default function Home() {
     },
   ];
 
+  const DOWNLOAD_URL =
+    "https://raw.githubusercontent.com/itublockchain/ethdam-oasis-guard/main/build/oasisguard-extension.zip";
+
   return (
     <>
       <main className="flex min-h-screen flex-col justify-between max-w-[1280px] m-auto pl-10 pr-10">
@@ -31,10 +34,11 @@ export default function Home() {
           <img src="/logo.png" alt="OasisGuard" className="w-[300px]" />
           <p className="mt-8 font-light text-xl text-neutral-400 max-w-[400px]">
             Onchain Password Manager, Hardware-Level Security with Passkeys
+            (Webauthn)
           </p>
           <a
             target="_blank"
-            href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
+            href={DOWNLOAD_URL}
             className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
           >
             Install OASISGUARD for Chrome
@@ -68,12 +72,12 @@ export default function Home() {
           <div className="flex flex-col order-0 md:order-1 w-[100%] justify-center h-full">
             <h2 className="text-4xl mb-4">Authenticate with biometrics</h2>
             <p className="w-[75%] text-neutral-400 text-lg">
-              OASISGUARD uses Passkeys to authenticate you using Biometric
-              Authentication.
+              OASISGUARD uses Passkeys (Webauthn) to authenticate you using
+              Biometric Authentication.
             </p>
             <a
               target="_blank"
-              href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
+              href={DOWNLOAD_URL}
               className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
             >
               Get Started with OASISGUARD
