@@ -11,7 +11,6 @@ import Rabby from "data-base64:~assets/logos/rabby.png";
 import Rainbow from "data-base64:~assets/logos/rainbow.png";
 import X from "data-base64:~assets/logos/x.png";
 import Zerion from "data-base64:~assets/logos/zerion.png";
-import { ethers } from "ethers";
 import {
     Add,
     ArrowDown2,
@@ -218,23 +217,25 @@ function PasswordView({ name }: { name: string }): ReactNode {
     });
 
     const getPasswordNameIcon = () => {
-        if (name.includes("google")) {
+        const nameLower = name.toLowerCase();
+
+        if (nameLower.includes("google")) {
             return GoogleImage;
-        } else if (name.includes("github")) {
+        } else if (nameLower.includes("github")) {
             return Github;
-        } else if (name.includes("metamask")) {
+        } else if (nameLower.includes("metamask")) {
             return Metamask;
-        } else if (name.includes("binance")) {
+        } else if (nameLower.includes("binance")) {
             return Binance;
-        } else if (name.includes("argent")) {
+        } else if (nameLower.includes("argent")) {
             return Argent;
-        } else if (name.includes("zerion")) {
+        } else if (nameLower.includes("zerion")) {
             return Zerion;
-        } else if (name.includes("rabby")) {
+        } else if (nameLower.includes("rabby")) {
             return Rabby;
-        } else if (name.includes("rainbow")) {
+        } else if (nameLower.includes("rainbow")) {
             return Rainbow;
-        } else if (name.includes("twitter")) {
+        } else if (nameLower.includes("twitter")) {
             return X;
         }
         return DefaultImage;
