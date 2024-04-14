@@ -10,16 +10,16 @@ contract Account is IR1Validator {
     bytes32 private privateKey;
 
     // Array for passwords
-    string[] private passwords;
+    bytes32[] private passwords;
 
     // Array for all the names
     string[] private names;
 
     // Mapping to check existence of a password to optimize deletion
-    mapping(string => bool) private passwordExists;
+    mapping(bytes32 => bool) private passwordExists;
 
     // Mapping for the names to passwords
-    mapping(string => string) private nameToPassword;
+    mapping(string => bytes32) private nameToPassword;
 
     // Mapping to chech existence of an names
     mapping(string => bool) private nameExists;
@@ -28,7 +28,7 @@ contract Account is IR1Validator {
     mapping(string => bytes32[2]) private invitationCodeToPublicKey;
 
     // Mapping invitation code to passwords
-    mapping(string => string[]) private invitationCodeToPasswords;
+    mapping(string => bytes32[]) private invitationCodeToPasswords;
 
     constructor(bytes32[2] memory _publicKey, bytes32 _privateKey) {
         publicKey = _publicKey;
@@ -39,7 +39,7 @@ contract Account is IR1Validator {
         address _validator,
         bytes32 _signedHash,
         bytes memory _signature,
-        string memory _password,
+        bytes32 _password,
         string memory _name
     ) public {
         require(
@@ -51,7 +51,7 @@ contract Account is IR1Validator {
             "Account: Cannot validate signature"
         );
         require(
-            bytes(nameToPassword[_name]).length != 0,
+            nameToPassword[_name] == bytes32(0),
             "Account: Password already exists"
         );
         require(bytes(_name).length > 0, "Account: Name cannot be empty");
@@ -67,7 +67,7 @@ contract Account is IR1Validator {
         address _validator,
         bytes32 _signedHash,
         bytes memory _signature,
-        string[] memory _passwords,
+        bytes32[] memory _passwords,
         string[] memory _names
     ) public {
         require(
@@ -85,7 +85,7 @@ contract Account is IR1Validator {
 
         for (uint i = 0; i < _passwords.length; i++) {
             require(
-                bytes(nameToPassword[_names[i]]).length != 0,
+                nameToPassword[_names[i]] == bytes32(0),
                 "Account: Password already exists"
             );
             require(
@@ -106,7 +106,7 @@ contract Account is IR1Validator {
         bytes32 _signedHash,
         bytes memory _signature,
         string memory _name
-    ) public view returns (string memory) {
+    ) public view returns (bytes32) {
         require(
             IR1Validator(_validator).validateSignature(
                 _signedHash,
@@ -135,19 +135,19 @@ contract Account is IR1Validator {
             "Account: Cannot validate signature"
         );
         require(
-            bytes(nameToPassword[_name]).length != 0,
+            nameToPassword[_name] != bytes32(0),
             "Account: Password does not exist"
         );
 
         // Remove the password from the array if it exists
-        string memory toDelete = nameToPassword[_name];
+        bytes32 toDelete = nameToPassword[_name];
         require(
             passwordExists[toDelete],
             "Account: Password does not exist in array"
         );
 
         for (uint256 i = 0; i < passwords.length; i++) {
-            if (keccak256(bytes(passwords[i])) == keccak256(bytes(toDelete))) {
+            if (passwords[i] == toDelete) {
                 passwords[i] = passwords[passwords.length - 1]; // Replace with last element
                 passwords.pop(); // Remove last element
                 break;
@@ -176,7 +176,7 @@ contract Account is IR1Validator {
         address _validator,
         bytes32 _signedHash,
         bytes memory _signature
-    ) public view returns (string[] memory) {
+    ) public view returns (bytes32[] memory) {
         require(
             IR1Validator(_validator).validateSignature(
                 _signedHash,
@@ -229,7 +229,7 @@ contract Account is IR1Validator {
         );
 
         invitationCodeToPublicKey[_invitationCode] = _recipientPublicKey;
-        string[] storage myPasswords = invitationCodeToPasswords[
+        bytes32[] storage myPasswords = invitationCodeToPasswords[
             _invitationCode
         ];
         for (uint i = 0; i < passwords.length; i++) {
@@ -255,8 +255,8 @@ contract Account is IR1Validator {
             invitationCodeToPasswords[_invitationCode].length > 0,
             "Account: Invitation code does not exist"
         );
-        string[] storage myPasswords = passwords;
-        string[] memory invitedPasswords = invitationCodeToPasswords[
+        bytes32[] storage myPasswords = passwords;
+        bytes32[] memory invitedPasswords = invitationCodeToPasswords[
             _invitationCode
         ];
         for (uint i = 0; i < invitedPasswords.length; i++) {
