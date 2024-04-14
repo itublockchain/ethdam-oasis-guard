@@ -23,7 +23,7 @@ export default function Home() {
   ];
 
   const DOWNLOAD_URL =
-    "https://raw.githubusercontent.com/itublockchain/ethdam-oasis-guard/master/build/oasisguard-extension.zip";
+    "https://raw.githubusercontent.com/itublockchain/ethdam-oasis-guard/main/build/oasisguard-extension.zip";
 
   return (
     <>
