@@ -8,7 +8,7 @@ These questions led us to consider blockchain as a secure storage solution. It i
 
 'If we have a black box, let's fill it with all the confidential things.'
 
-This setup is promising, but how do we access the contract? In today's world, passkeys have become indispensable. We verified signatures from the r1 curve on Oasis, enabling users to access the contract using their passkey details and to manage passwords as they desire. Consequently, we developed a browser extension that operates with passkeys on Sapphire.
+This setup is promising, but how do we access the contract? In today's world, passkeys (webauthn) have become indispensable. We verified signatures from the r1 curve on Oasis, enabling users to access the contract using their passkey (webauthn) details and to manage passwords as they desire. Consequently, we developed a browser extension that operates with passkeys (webauthn) on Sapphire.
 
 Furthermore, we wanted to add another feature commonly used in password managers: the secure transfer of passwords to another individual or group. For this purpose, we utilize Semaphore, which allows for the secure sharing of certain confidential data with friends or a team. This system anonymizes the grouping of individuals and enables private messaging through this channel. Once whitelisted by the main account, these individuals also gain access to the passwords. For instance,
 
