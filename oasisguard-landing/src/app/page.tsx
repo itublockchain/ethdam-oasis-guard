@@ -1,4 +1,3 @@
-import heart from "../../public/Pixel_heart_red.svg";
 export default function Home() {
   const faq = [
     {
