@@ -1,6 +1,6 @@
 # OASISGUARD
 
-<img src="./ss.png" width="60%">
+<img src="./ss.png" width="80%">
 
 In our daily lives, we frequently use and need to securely store numerous passwords, seed phrases, and authentication methods. As we reach a point where creating a new password and beginning to use it becomes almost a daily routine, we find ourselves in need of tools to manage these data securely. Typically, we rely on centralized password managers. However, what if these systems fail tomorrow? How secure is our data? Could we have better control over it?
 
