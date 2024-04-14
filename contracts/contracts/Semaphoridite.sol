@@ -2,11 +2,17 @@
 pragma solidity ^0.8.20;
 
 import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
+import "@semaphore-protocol/contracts/interfaces/ISemaphoreGroups.sol";
 
 contract Semaphoridite {
     // Deployed Semaphore.sol address on Oasis Sapphire Testnet
-    ISemaphore semaphore =
-        ISemaphore(0x9245483dB42fFa2087b0577bF247a0cbaaef2E84);
+    ISemaphore public semaphore;
+    ISemaphoreGroups public semaphoreGroups;
+
+    constructor(address _semaphore, address _semaphoreGroups) {
+        semaphore = ISemaphore(_semaphore);
+        semaphoreGroups = ISemaphoreGroups(_semaphoreGroups);
+    }
 
     // Array to store all the group ids
     uint256[] public groupIds;
@@ -46,8 +52,8 @@ contract Semaphoridite {
         uint256 nullifier,
         uint256 message,
         uint256 _groupId,
-        uint256[8] calldata points
-    ) external view returns (bool) {
+        uint256[8] memory points
+    ) internal view returns (bool) {
         ISemaphore.SemaphoreProof memory proof = ISemaphore.SemaphoreProof(
             merkleTreeDepth,
             merkleTreeRoot,
@@ -58,5 +64,34 @@ contract Semaphoridite {
         );
 
         return semaphore.verifyProof(_groupId, proof);
+    }
+
+    function generateAndVerifyProof(
+        uint256 _groupId,
+        uint256 _message
+    ) public view returns (ISemaphore.SemaphoreProof memory) {
+        uint256 depth = semaphoreGroups.getMerkleTreeDepth(_groupId);
+        uint256 root = semaphoreGroups.getMerkleTreeRoot(_groupId);
+        uint256 nullifier = 0;
+        uint256[8] memory points = [
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0)
+        ];
+        verifyProof(depth, root, nullifier, _message, _groupId, points);
+        return
+            ISemaphore.SemaphoreProof(
+                depth,
+                root,
+                nullifier,
+                _message,
+                _groupId,
+                points
+            );
     }
 }

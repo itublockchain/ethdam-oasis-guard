@@ -61,9 +61,9 @@ export const AccountABI = [
                 type: "bytes",
             },
             {
-                internalType: "bytes32",
+                internalType: "string",
                 name: "_password",
-                type: "bytes32",
+                type: "string",
             },
             {
                 internalType: "string",
@@ -94,9 +94,9 @@ export const AccountABI = [
                 type: "bytes",
             },
             {
-                internalType: "bytes32[]",
+                internalType: "string[]",
                 name: "_passwords",
-                type: "bytes32[]",
+                type: "string[]",
             },
             {
                 internalType: "string[]",
@@ -209,9 +209,9 @@ export const AccountABI = [
         name: "getPassword",
         outputs: [
             {
-                internalType: "bytes32",
+                internalType: "string",
                 name: "",
-                type: "bytes32",
+                type: "string",
             },
         ],
         stateMutability: "view",
@@ -238,9 +238,9 @@ export const AccountABI = [
         name: "getPasswords",
         outputs: [
             {
-                internalType: "bytes32[]",
+                internalType: "string[]",
                 name: "",
-                type: "bytes32[]",
+                type: "string[]",
             },
         ],
         stateMutability: "view",
