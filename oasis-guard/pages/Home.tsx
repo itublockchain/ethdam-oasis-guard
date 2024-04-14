@@ -11,6 +11,7 @@ import Rabby from "data-base64:~assets/logos/rabby.png";
 import Rainbow from "data-base64:~assets/logos/rainbow.png";
 import X from "data-base64:~assets/logos/x.png";
 import Zerion from "data-base64:~assets/logos/zerion.png";
+import { ethers } from "ethers";
 import {
     Add,
     ArrowDown2,

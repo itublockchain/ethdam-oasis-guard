@@ -26,13 +26,7 @@ export class OasisGuardPasswordController {
         const receipt = await sendGaslessTx({
             abi: AccountABI,
             contractAddress: publicAddress,
-            params: [
-                this.VALIDATOR,
-                signedHash,
-                signature,
-                ethers.utils.formatBytes32String(password),
-                name,
-            ],
+            params: [this.VALIDATOR, signedHash, signature, password, name],
             functionName: "addPassword",
         });
         return receipt;
@@ -54,28 +48,12 @@ export class OasisGuardPasswordController {
             Buffer.from(OasisGuardPasskeyController.CHALLENGE),
         );
 
-        const passwordsFormatted = passwords.map((password) => {
-            return ethers.utils.formatBytes32String(password);
-        });
-
-        console.log([
-            this.VALIDATOR,
-            signedHash,
-            signature,
-            passwordsFormatted,
-            names,
-        ]);
+        console.log([this.VALIDATOR, signedHash, signature, passwords, names]);
 
         const receipt = await sendGaslessTx({
             abi: AccountABI,
             contractAddress: publicAddress,
-            params: [
-                this.VALIDATOR,
-                signedHash,
-                signature,
-                passwordsFormatted,
-                names,
-            ],
+            params: [this.VALIDATOR, signedHash, signature, passwords, names],
             functionName: "addPasswords",
         });
         return receipt;
