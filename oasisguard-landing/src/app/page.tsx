@@ -27,7 +27,7 @@ export default function Home() {
           {/* eslint-disable-next-line */}
           <img src="/logo.png" alt="OasisGuard" className="w-[300px]" />
           <p className="mt-8 font-light text-xl text-neutral-400 max-w-[400px]">
-            Your on-chain password manager with hardware level security.
+            Onchain Password Manager, Hardware-Level Security with Passkeys
           </p>
           <a
             target="_blank"
