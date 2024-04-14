@@ -22,6 +22,9 @@ export default function Home() {
     },
   ];
 
+  const DOWNLOAD_URL =
+    "https://raw.githubusercontent.com/itublockchain/ethdam-oasis-guard/master/build/oasisguard-extension.zip";
+
   return (
     <>
       <main className="flex min-h-screen flex-col justify-between max-w-[1280px] m-auto pl-10 pr-10">
@@ -33,7 +36,7 @@ export default function Home() {
           </p>
           <a
             target="_blank"
-            href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
+            href={DOWNLOAD_URL}
             className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
           >
             Install OASISGUARD for Chrome
@@ -72,7 +75,7 @@ export default function Home() {
             </p>
             <a
               target="_blank"
-              href="https://drive.google.com/file/d/1dUCdJGHMhk3I9tJUvbUV92t2DEex8prT/view?usp=sharing"
+              href={DOWNLOAD_URL}
               className="bg-white flex w-max items-center mt-8 text-black pl-4 pr-4 h-[48px] rounded-lg"
             >
               Get Started with OASISGUARD
